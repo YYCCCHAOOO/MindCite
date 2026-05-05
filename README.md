@@ -4,11 +4,49 @@ MindCite 是一个面向研究者的本地文献工作流模板，用来把 Zote
 
 这个公开版是安全模板，不包含任何真实论文、真实索引、真实 Zotero 数据库、API key 或个人研究材料。仓库里的 `examples/demo-vault` 是完全虚构的演示数据，只用于试跑功能。
 
+## 项目主题
+
+把 Zotero 论文库变成一个可追溯、可复用、可扩展的本地研究工作台。
+
+MindCite 的核心不是“让 AI 替你读完所有论文”，而是帮你建立一条更稳的研究管线：Zotero 负责资料管理，Obsidian 负责长期沉淀，Codex 负责把重复的索引、精读、分类、检查和综述草稿自动化。
+
+## 核心亮点
+
+- 本地优先：真实 PDF、Zotero 数据库、API key、日志和个人研究笔记默认不进仓库。
+- 可追溯：从 Zotero 索引到精读 notes，再到分类审核和综述草稿，每一步都有文件输出。
+- 可试跑：内置 `examples/demo-vault` 合成演示数据，刚下载就能验证主流程。
+- 可扩展：模型厂商、embedding、模板、分类维度和外部数据库都通过配置层扩展。
+- 面向研究者：重点服务“持续阅读、分类治理、理论/方法积累、后续论文写作”，不是一次性的聊天问答。
+
 ## 适合谁
 
 - 你用 Zotero 管理论文，并希望把阅读结果沉淀到 Obsidian。
 - 你想用 Codex 或其他 AI coding agent 帮你自动跑索引、精读、分类和综述。
 - 你希望保留本地知识库能力，但不想把 Zotero 数据库、PDF、未发表论文和 API key 上传到云端。
+
+## 不适合谁
+
+- 你只想要一个无需配置、打开网页就能用的在线工具。
+- 你还没有 Zotero 或 Obsidian 的基本使用习惯。
+- 你希望把整库论文和私人研究资料直接上传到 GitHub 或云端。
+- 你期待 AI 自动替代研究判断，而不是辅助整理、检索和生成草稿。
+
+## 5 分钟体验路径
+
+如果你只是先体验，不需要配置真实 Zotero 路径和 API key，直接跑合成演示数据：
+
+```powershell
+git clone https://github.com/YYCCCHAOOO/MindCite.git MindCite
+cd MindCite
+python -m pip install -r requirements.txt
+python tools/structure_check.py
+$env:MINDCITE_ROOT=(Resolve-Path .\examples\demo-vault)
+python _skills/Zotero-Library-Sync/scripts/vault_health_check.py
+python _skills/Classification-Governance-System/scripts/build_classification_review_queue.py --all
+Remove-Item Env:\MINDCITE_ROOT
+```
+
+看到 `ok: true` 就说明本地结构、演示索引和分类审核队列都能正常跑通。之后再复制 `.env.example`，填自己的 Zotero 路径和模型 key。
 
 ## 目录结构
 
@@ -30,7 +68,7 @@ MindCite/
 1. 克隆仓库并进入目录。
 
 ```powershell
-git clone <your-repo-url> MindCite
+git clone https://github.com/YYCCCHAOOO/MindCite.git MindCite
 cd MindCite
 ```
 
