@@ -164,6 +164,8 @@ python _skills/Zotero-Reading-System/scripts/zotero_ai_reading_pipeline.py --ite
 
 ## 分类治理与综述流程
 
+分类是 MindCite 中最复杂、也最值得谨慎使用的模块。详细说明见 [分类指南](docs/classification-guide.md)。建议先按指南生成审核队列和 dry-run，不要一开始就写回 Zotero。
+
 ### 健康检查
 
 ```powershell

@@ -13,6 +13,7 @@ REQUIRED_PATHS = [
     "AGENTS.md",
     "SECURITY.md",
     "docs/architecture.md",
+    "docs/classification-guide.md",
     "docs/codex-setup.md",
     "docs/troubleshooting.md",
     "docs/extension-policy.md",
