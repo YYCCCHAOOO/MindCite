@@ -1,14 +1,64 @@
 {
   "schema_version": "0.2.0",
-  "version": "demo-2026-01",
-  "source": "synthetic-example",
+  "version": "finance-demo-2026-01",
+  "source": "synthetic-finance-example",
+  "description": "A synthetic finance research taxonomy example for MindCite users. Copy this file into your private Vault and revise labels, paths, and keywords for your own research agenda.",
   "dimensions": {
     "theory": [
       {
         "label": "金融传染",
         "target_collection_base": "3. 理论文献",
         "target_collection_path": "3. 理论文献 / 金融传染",
-        "keywords": ["financial contagion", "risk spillover", "金融传染", "风险溢出"],
+        "keywords": ["financial contagion", "contagion effect", "risk spillover", "volatility spillover", "金融传染", "风险溢出", "波动溢出"],
+        "negative_keywords": ["disease contagion", "epidemic contagion"]
+      },
+      {
+        "label": "系统性风险理论",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 系统性风险理论",
+        "keywords": ["systemic risk", "financial stability", "macroprudential", "financial network", "系统性风险", "金融稳定", "宏观审慎"],
+        "negative_keywords": []
+      },
+      {
+        "label": "资产定价理论",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 资产定价理论",
+        "keywords": ["asset pricing", "CAPM", "ICAPM", "risk premium", "factor model", "资产定价", "风险溢价", "因子模型"],
+        "negative_keywords": []
+      },
+      {
+        "label": "避险资产理论",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 避险资产理论",
+        "keywords": ["safe haven", "hedge asset", "flight to quality", "haven currency", "避险资产", "安全资产", "避险货币"],
+        "negative_keywords": ["safe haven policy"]
+      },
+      {
+        "label": "汇率决定理论",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 汇率决定理论",
+        "keywords": ["exchange rate determination", "uncovered interest parity", "UIP", "exchange rate puzzle", "汇率决定", "利率平价", "UIP偏离"],
+        "negative_keywords": []
+      },
+      {
+        "label": "国际货币体系",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 国际货币体系",
+        "keywords": ["international monetary system", "reserve currency", "currency internationalization", "vehicle currency", "国际货币体系", "储备货币", "货币国际化"],
+        "negative_keywords": []
+      },
+      {
+        "label": "金融摩擦理论",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 金融摩擦理论",
+        "keywords": ["financial friction", "credit constraint", "collateral constraint", "balance sheet channel", "金融摩擦", "信贷约束", "抵押约束", "资产负债表渠道"],
+        "negative_keywords": []
+      },
+      {
+        "label": "预期与信息理论",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 预期与信息理论",
+        "keywords": ["expectation formation", "information friction", "rational inattention", "news shock", "预期形成", "信息摩擦", "理性疏忽", "新闻冲击"],
         "negative_keywords": []
       }
     ],
@@ -17,7 +67,56 @@
         "label": "网络分析",
         "target_collection_base": "2. 模型",
         "target_collection_path": "2. 模型 / 网络分析",
-        "keywords": ["network", "connectedness", "spillover index", "网络", "连通性"],
+        "keywords": ["network", "connectedness", "spillover index", "Diebold Yilmaz", "centrality", "网络", "连通性", "溢出指数", "中心性"],
+        "negative_keywords": ["social network platform"]
+      },
+      {
+        "label": "VAR / SVAR",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / VAR与SVAR",
+        "keywords": ["VAR", "SVAR", "proxy SVAR", "vector autoregression", "impulse response", "方差分解", "脉冲响应"],
+        "negative_keywords": []
+      },
+      {
+        "label": "GARCH族模型",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / GARCH族模型",
+        "keywords": ["GARCH", "DCC-GARCH", "EGARCH", "GJR-GARCH", "volatility model", "条件异方差", "波动模型"],
+        "negative_keywords": []
+      },
+      {
+        "label": "MIDAS模型",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / MIDAS模型",
+        "keywords": ["MIDAS", "GARCH-MIDAS", "mixed data sampling", "mixed frequency", "混频数据", "混合频率"],
+        "negative_keywords": []
+      },
+      {
+        "label": "Copula与尾部依赖",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / Copula与尾部依赖",
+        "keywords": ["copula", "vine copula", "tail dependence", "extreme dependence", "尾部依赖", "极端相关"],
+        "negative_keywords": []
+      },
+      {
+        "label": "事件研究",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / 事件研究",
+        "keywords": ["event study", "abnormal return", "announcement effect", "事件研究", "异常收益", "公告效应"],
+        "negative_keywords": []
+      },
+      {
+        "label": "面板数据模型",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / 面板数据模型",
+        "keywords": ["panel data", "fixed effects", "random effects", "dynamic panel", "面板数据", "固定效应", "动态面板"],
+        "negative_keywords": []
+      },
+      {
+        "label": "文本分析",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / 文本分析",
+        "keywords": ["textual analysis", "sentiment", "topic model", "NLP", "news text", "文本分析", "情绪指标", "主题模型"],
         "negative_keywords": []
       }
     ],
@@ -26,7 +125,56 @@
         "label": "国际金融风险",
         "target_collection_base": "4. 主题研究",
         "target_collection_path": "4. 主题研究 / 国际金融风险",
-        "keywords": ["global risk", "international finance", "cross-border", "国际金融", "跨境风险"],
+        "keywords": ["global risk", "international finance", "cross-border risk", "global financial cycle", "国际金融", "跨境风险", "全球金融周期"],
+        "negative_keywords": []
+      },
+      {
+        "label": "汇率与货币风险",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 汇率与货币风险",
+        "keywords": ["exchange rate", "currency risk", "FX market", "exchange rate volatility", "汇率", "货币风险", "外汇市场"],
+        "negative_keywords": []
+      },
+      {
+        "label": "大宗商品与能源金融",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 大宗商品与能源金融",
+        "keywords": ["commodity market", "oil price", "energy finance", "gold", "crude oil", "大宗商品", "能源金融", "油价", "黄金"],
+        "negative_keywords": []
+      },
+      {
+        "label": "气候金融",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 气候金融",
+        "keywords": ["climate finance", "green finance", "carbon market", "climate risk", "ESG", "气候金融", "绿色金融", "碳市场", "气候风险"],
+        "negative_keywords": []
+      },
+      {
+        "label": "数字货币与加密资产",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 数字货币与加密资产",
+        "keywords": ["cryptocurrency", "bitcoin", "stablecoin", "central bank digital currency", "CBDC", "数字货币", "加密资产", "比特币", "稳定币"],
+        "negative_keywords": []
+      },
+      {
+        "label": "金融市场波动",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 金融市场波动",
+        "keywords": ["market volatility", "volatility spillover", "financial volatility", "波动率", "市场波动", "波动溢出"],
+        "negative_keywords": []
+      },
+      {
+        "label": "跨境资本流动",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 跨境资本流动",
+        "keywords": ["capital flows", "portfolio flows", "sudden stop", "gross capital flows", "资本流动", "跨境资本", "资本外流"],
+        "negative_keywords": []
+      },
+      {
+        "label": "金融制裁与地缘风险",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 金融制裁与地缘风险",
+        "keywords": ["financial sanctions", "geopolitical risk", "sanction shock", "war risk", "金融制裁", "地缘风险", "地缘政治风险"],
         "negative_keywords": []
       }
     ]

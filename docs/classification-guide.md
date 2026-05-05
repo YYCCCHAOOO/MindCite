@@ -340,6 +340,14 @@ indexes/classification_taxonomy.json
 
 如果这个文件不存在，脚本会使用内置默认 taxonomy。建议你为自己的研究库维护一个正式 taxonomy。
 
+仓库内置了一个“金融研究版”合成示例：
+
+```text
+examples/demo-vault/indexes/classification_taxonomy.json
+```
+
+你可以把这个文件复制到自己的私有 Vault 的 `indexes/classification_taxonomy.json`，再按自己的研究方向删减和改名。它只是通用示例，不代表任何个人研究判断。
+
 基本结构：
 
 ```json
