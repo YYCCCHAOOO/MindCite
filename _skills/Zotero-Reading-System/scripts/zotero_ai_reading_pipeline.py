@@ -44,6 +44,7 @@ CONFIG_PATH = CONFIG.reader_config_path
 DB_PATHS = configured_existing_paths(CONFIG.zotero_db_path, CONFIG.zotero_snapshot_path)
 DEFAULT_BATCH_SIZE = 2
 INVALID_FILE_CHARS = '<>:"/\\|?*'
+TRUE_VALUES = {"1", "true", "yes", "on"}
 CLASSIFICATION_LIST_FIELDS = [
     "theory_family_tags",
     "theory_tags",
@@ -226,6 +227,8 @@ def read_user_env_var(name: str) -> str | None:
 
 
 def configured_key(block: dict[str, Any]) -> str | None:
+    if (os.environ.get("MINDCITE_OFFLINE") or "").strip().lower() in TRUE_VALUES:
+        return None
     direct = (block.get("api_key") or "").strip()
     if direct:
         return direct
