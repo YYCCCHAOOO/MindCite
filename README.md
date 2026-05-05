@@ -16,6 +16,7 @@ MindCite 的核心不是“让 AI 替你读完所有论文”，而是帮你建�
 - 可追溯：从 Zotero 索引到精读 notes，再到分类审核和综述草稿，每一步都有文件输出。
 - 可试跑：内置 `examples/demo-vault` 合成演示数据，刚下载就能验证主流程。
 - 可扩展：模型厂商、embedding、模板、分类维度和外部数据库都通过配置层扩展。
+- 可守底线：v0.2 起加入 schema 校验、原子写入、迁移 dry-run、quarantine 和 smoke test。
 - 面向研究者：重点服务“持续阅读、分类治理、理论/方法积累、后续论文写作”，不是一次性的聊天问答。
 
 ## 适合谁
@@ -40,6 +41,7 @@ git clone https://github.com/YYCCCHAOOO/MindCite.git MindCite
 cd MindCite
 python -m pip install -r requirements.txt
 python tools/structure_check.py
+python tools/validate_data_contracts.py --demo-only
 $env:MINDCITE_ROOT=(Resolve-Path .\examples\demo-vault)
 python _skills/Zotero-Library-Sync/scripts/vault_health_check.py
 python _skills/Classification-Governance-System/scripts/build_classification_review_queue.py --all
@@ -58,7 +60,9 @@ MindCite/
   examples/demo-vault/             # 合成演示 Vault，不含真实研究信息
   indexes/                         # 运行时索引输出，默认不提交
   logs/                            # 运行日志，默认不提交
+  migrations/                      # 数据结构迁移脚本
   notes/zotero_reading/_papers/    # 新版精读笔记输出，默认不提交
+  schemas/                         # 核心数据契约
   templates/                       # 可放你的公开模板
   tools/                           # 发布安全检查工具
 ```
@@ -102,6 +106,7 @@ python -m pip install -r requirements.txt
 
 ```powershell
 python tools/structure_check.py
+python tools/validate_data_contracts.py --demo-only
 ```
 
 6. 运行空 Vault 健康检查。
@@ -234,6 +239,31 @@ LLM 与 embedding 的厂商、base URL、默认模型配置在 `_skills/Zotero-R
 | Embedding | `siliconflow` | `SILICONFLOW_EMBEDDING_MODEL=BAAI/bge-m3` | `SILICONFLOW_API_KEY` |
 | Embedding | `openai` | `OPENAI_EMBEDDING_MODEL=text-embedding-3-small` | `OPENAI_API_KEY` |
 | Embedding | `custom` | `MINDCITE_EMBEDDING_MODEL` | `MINDCITE_EMBEDDING_API_KEY` |
+
+## 安全底座
+
+v0.2.0 开始，MindCite 把长期扩展风险显式拆出来：
+
+- `schemas/`：定义 index、reading status、note frontmatter、taxonomy、review queue 的数据契约。
+- `_skills/common/safe_io.py`：提供原子写入、备份和 quarantine。
+- `tools/validate_data_contracts.py`：校验 demo 或真实 Vault 是否符合当前契约。
+- `tools/migrate.py`：默认 dry-run，把旧数据升级到当前 `schema_version`。
+- `tools/smoke_test.py`：用 demo-vault 跑一遍回归检查。
+
+推荐在新增功能或迁移真实 Vault 前执行：
+
+```powershell
+python tools/migrate.py --dry-run
+python tools/smoke_test.py
+```
+
+真实迁移才使用：
+
+```powershell
+python tools/migrate.py --apply
+```
+
+扩展新功能前，请先看 `docs/extension-policy.md`。
 
 ## 常见问题
 

@@ -15,6 +15,7 @@ if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
 from mindcite_config import load_config
+from safe_io import DATA_CONTRACT_VERSION, atomic_write_json, atomic_write_jsonl, atomic_write_text
 
 
 CONFIG = load_config(Path(__file__))
@@ -428,13 +429,11 @@ def scan_existing_notes() -> dict[str, list[Path]]:
 
 
 def write_json(path: Path, data: Any) -> None:
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_json(path, data)
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
-    with path.open("w", encoding="utf-8", newline="\n") as fh:
-        for row in rows:
-            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    atomic_write_jsonl(path, rows)
 
 
 def ensure_dirs() -> None:
@@ -573,6 +572,7 @@ def main() -> None:
         status_row = status_map.get(item["item_key"], {})
         rows.append(
             {
+                "schema_version": DATA_CONTRACT_VERSION,
                 "item_key": item["item_key"],
                 "title": item["title"],
                 "item_type": item["item_type"],
@@ -641,6 +641,7 @@ def main() -> None:
     tree = build_collection_tree(collections, path_names, memberships)
     generated_at = now_iso()
     meta = {
+        "schema_version": DATA_CONTRACT_VERSION,
         "generated_at": generated_at,
         "source_db": str(db_path),
         "source_db_kind": db_kind,
@@ -677,7 +678,7 @@ def main() -> None:
     write_jsonl(INDEX_DIR / "zotero_library_index.jsonl", rows)
     write_json(INDEX_DIR / "zotero_collection_tree.json", tree)
     write_json(INDEX_DIR / "zotero_index_meta.json", meta)
-    (INDEX_DIR / "zotero_index_summary.md").write_text("\n".join(summary) + "\n", encoding="utf-8")
+    atomic_write_text(INDEX_DIR / "zotero_index_summary.md", "\n".join(summary) + "\n")
 
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_path = LOG_DIR / f"update_index_{stamp}.md"
@@ -704,7 +705,7 @@ def main() -> None:
         f"- `{INDEX_DIR / 'zotero_index_meta.json'}`",
         f"- `{INDEX_DIR / 'zotero_index_summary.md'}`",
     ]
-    log_path.write_text("\n".join(log_lines) + "\n", encoding="utf-8")
+    atomic_write_text(log_path, "\n".join(log_lines) + "\n")
 
     print(json.dumps({"ok": True, "log_path": str(log_path), "meta": meta}, ensure_ascii=False))
 

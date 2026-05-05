@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MindCite Classification Review Queue Row",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "item_key",
+    "title",
+    "current_zotero_collections",
+    "primary_collection",
+    "suggested_theory_tags",
+    "suggested_method_tags",
+    "suggested_topic_tags",
+    "evidence_note_path",
+    "matched_keywords",
+    "confidence",
+    "review_status",
+    "generated_at"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "item_key": {"type": "string"},
+    "title": {"type": "string"},
+    "current_zotero_collections": {"type": "array"},
+    "primary_collection": {"type": ["string", "null"]},
+    "suggested_theory_tags": {"type": "array"},
+    "suggested_method_tags": {"type": "array"},
+    "suggested_topic_tags": {"type": "array"},
+    "evidence_note_path": {"type": "string"},
+    "evidence_summary": {"type": "string"},
+    "matched_keywords": {"type": "object"},
+    "confidence": {"type": "number"},
+    "review_status": {"type": "string"},
+    "generated_at": {"type": "string"}
+  }
+}

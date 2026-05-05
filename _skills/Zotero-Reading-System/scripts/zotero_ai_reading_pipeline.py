@@ -28,6 +28,7 @@ if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
 from mindcite_config import configured_existing_paths, expand_env_data, load_config
+from safe_io import DATA_CONTRACT_VERSION, atomic_write_jsonl, atomic_write_text, quarantine_file
 
 
 CONFIG = load_config(Path(__file__))
@@ -38,6 +39,7 @@ STATUS_PATH = CONFIG.status_path
 LOG_DIR = CONFIG.logs_dir
 NOTES_DIR = CONFIG.notes_dir
 NOTES_PAPERS_DIR = CONFIG.notes_papers_dir
+QUARANTINE_DIR = CONFIG.logs_dir / "quarantine"
 CONFIG_PATH = CONFIG.reader_config_path
 DB_PATHS = configured_existing_paths(CONFIG.zotero_db_path, CONFIG.zotero_snapshot_path)
 DEFAULT_BATCH_SIZE = 2
@@ -171,7 +173,7 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
-    path.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n", encoding="utf-8")
+    atomic_write_jsonl(path, rows)
 
 
 def load_config() -> dict[str, Any]:
@@ -875,6 +877,7 @@ def render_note(index_row: dict[str, Any], summary: dict[str, Any]) -> str:
             )
         )
     return f"""---
+schema_version: {yaml_scalar(DATA_CONTRACT_VERSION)}
 title: {yaml_scalar(summary.get('title', index_row['title']))}
 aliases: []
 tags:
@@ -1012,7 +1015,7 @@ def note_output_path(index_row: dict[str, Any]) -> Path:
 
 
 def remove_duplicate_notes(item_key: str, keep_path: Path) -> list[str]:
-    removed: list[str] = []
+    quarantined: list[str] = []
     pattern = f"*__{item_key}.md"
     for candidate in NOTES_DIR.rglob(pattern):
         try:
@@ -1021,9 +1024,16 @@ def remove_duplicate_notes(item_key: str, keep_path: Path) -> list[str]:
             same_file = candidate == keep_path
         if same_file:
             continue
-        candidate.unlink(missing_ok=True)
-        removed.append(str(candidate))
-    return removed
+        quarantine_path = quarantine_file(
+            candidate,
+            root=ROOT,
+            quarantine_root=QUARANTINE_DIR,
+            reason=f"duplicate note for item_key {item_key}",
+            script=Path(__file__).name,
+        )
+        if quarantine_path:
+            quarantined.append(str(quarantine_path))
+    return quarantined
 
 
 def update_status(item_key: str, row: dict[str, Any]) -> None:
@@ -1088,7 +1098,7 @@ def process_row(index_row: dict[str, Any], meta: dict[str, Any], config: dict[st
             generation_error = f"{type(exc).__name__}: {exc}"
     note_path = note_output_path(index_row)
     note_path.parent.mkdir(parents=True, exist_ok=True)
-    note_path.write_text(render_note(index_row, summary), encoding="utf-8")
+    atomic_write_text(note_path, render_note(index_row, summary))
     removed_duplicates = remove_duplicate_notes(index_row["item_key"], note_path)
     return {
         "note_path": str(note_path),
@@ -1178,6 +1188,7 @@ def main() -> None:
     for row in queue:
         target = row.get("primary_collection_path") or "Uncategorized"
         status_row = {
+            "schema_version": DATA_CONTRACT_VERSION,
             "item_key": row["item_key"],
             "title": row["title"],
             "target": target,
@@ -1228,7 +1239,7 @@ def main() -> None:
             update_status(row["item_key"], status_row)
             log_lines.append(f"- `needs_note` | {row['item_key']} | {row['title']} | {type(exc).__name__}: {exc}")
 
-    log_path.write_text("\n".join(log_lines) + "\n", encoding="utf-8")
+    atomic_write_text(log_path, "\n".join(log_lines) + "\n")
     print(
         json.dumps(
             {

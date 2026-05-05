@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MindCite Note Frontmatter",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "title",
+    "zotero_key",
+    "zotero_select_uri",
+    "zotero_collections",
+    "primary_collection",
+    "theory_family_tags",
+    "theory_tags",
+    "method_family_tags",
+    "method_model_tags",
+    "method_tags",
+    "topic_family_tags",
+    "topic_tags",
+    "classification_status",
+    "classification_audit"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "title": {"type": "string"},
+    "zotero_key": {"type": "string"},
+    "zotero_select_uri": {"type": ["string", "null"]},
+    "zotero_open_pdf_uri": {"type": ["string", "null"]},
+    "zotero_collections": {"type": "array"},
+    "primary_collection": {"type": ["string", "null"]},
+    "theory_family_tags": {"type": "array"},
+    "theory_tags": {"type": "array"},
+    "theory_sub_tags": {"type": "array"},
+    "method_family_tags": {"type": "array"},
+    "method_model_tags": {"type": "array"},
+    "method_combo_tags": {"type": "array"},
+    "method_tags": {"type": "array"},
+    "topic_family_tags": {"type": "array"},
+    "topic_tags": {"type": "array"},
+    "classification_status": {"type": "string"},
+    "classification_audit": {"type": "array"}
+  }
+}

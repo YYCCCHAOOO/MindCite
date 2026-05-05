@@ -38,3 +38,19 @@ flowchart LR
 - 新分类维度要同步更新 taxonomy、frontmatter、queue 和 synthesis。
 - 新模型 provider 只修改 reader config 和 provider 调用，不要把 key 写进脚本。
 - 写操作默认 dry-run，并保留可审计报告。
+- 核心数据文件带 `schema_version`，并由 `tools/validate_data_contracts.py` 校验。
+- 关键写入使用 `_skills/common/safe_io.py` 的原子写入工具。
+- 需要清理旧笔记时先进入 `logs/quarantine`，不要直接删除。
+
+## v0.2.0 安全底座
+
+```mermaid
+flowchart TD
+  Schemas["schemas/*.schema.json"] --> Validate["tools/validate_data_contracts.py"]
+  SafeIO["_skills/common/safe_io.py"] --> Writers["核心脚本写入"]
+  Migrate["tools/migrate.py"] --> Versioned["schema_version 升级"]
+  Quarantine["logs/quarantine"] --> Recover["误删可恢复"]
+  Smoke["tools/smoke_test.py"] --> Demo["examples/demo-vault"]
+```
+
+长期扩展时，先更新 schema 和迁移，再改脚本行为。这样即使后续加入新模型、新数据库、新分类维度，也能先发现旧数据是否会被破坏。

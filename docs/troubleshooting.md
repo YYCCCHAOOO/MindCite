@@ -54,6 +54,28 @@ chcp 65001
 - 笔记确实生成在 `notes/zotero_reading/_papers`。
 - Dataview 等插件已由你自己安装。
 
+## 数据契约检查失败
+
+如果 `python tools/validate_data_contracts.py` 报 `schema_version_mismatch` 或 `missing_required_field`，通常说明你在用旧版本生成的数据。
+
+先 dry-run：
+
+```powershell
+python tools/migrate.py --dry-run
+```
+
+确认报告里只修改你预期的 `indexes`、`logs` 或 `_papers` 笔记后，再执行：
+
+```powershell
+python tools/migrate.py --apply
+```
+
+迁移会先备份被修改的文件，备份位置在 `logs/migration_backups`。
+
+## 笔记被移动到 quarantine
+
+v0.2.0 起，脚本不再直接删除重复精读笔记，而是移动到 `logs/quarantine`。如果发现误判，可以根据同目录下的 `manifest.jsonl` 找到原路径和隔离原因，再手动恢复。
+
 ## 安全扫描失败
 
 先阅读 `tools/safety_scan.py` 输出的 `path` 和 `type`。常见处理：

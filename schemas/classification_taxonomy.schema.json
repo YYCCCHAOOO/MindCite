@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MindCite Classification Taxonomy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "version",
+    "dimensions"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "version": {"type": "string"},
+    "source": {"type": ["string", "null"]},
+    "dimensions": {"type": "object"}
+  },
+  "x_required_dimensions": ["theory", "method", "topic"],
+  "x_dimension_entry_required": ["label", "keywords"]
+}

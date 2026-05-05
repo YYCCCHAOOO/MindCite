@@ -1,4 +1,5 @@
 ---
+schema_version: "0.2.0"
 title: "Demonstration Paper on Global Risk Spillovers"
 aliases:
   - "Global Risk Spillovers Demo"

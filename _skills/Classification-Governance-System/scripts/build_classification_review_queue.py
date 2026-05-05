@@ -15,6 +15,7 @@ if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
 from mindcite_config import load_config
+from safe_io import DATA_CONTRACT_VERSION, atomic_write_jsonl
 
 
 CONFIG = load_config(Path(__file__))
@@ -31,6 +32,7 @@ DIMENSION_FIELDS = {
 }
 
 DEFAULT_TAXONOMY: dict[str, Any] = {
+    "schema_version": DATA_CONTRACT_VERSION,
     "version": "built-in-v2",
     "dimensions": {
         "theory": [
@@ -115,10 +117,7 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + ("\n" if rows else ""),
-        encoding="utf-8",
-    )
+    atomic_write_jsonl(path, rows)
 
 
 def clean_string_list(value: Any) -> list[str]:
@@ -373,6 +372,7 @@ def main() -> None:
 
         rows.append(
             {
+                "schema_version": DATA_CONTRACT_VERSION,
                 "item_key": item_key,
                 "title": index_row.get("title") or fm.get("title") or Path(note["note_path"]).stem,
                 "current_zotero_collections": index_row.get("collection_paths") or fm.get("zotero_collections") or [],

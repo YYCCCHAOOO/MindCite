@@ -1,4 +1,5 @@
 {
+  "schema_version": "0.2.0",
   "version": "demo-2026-01",
   "source": "synthetic-example",
   "dimensions": {
