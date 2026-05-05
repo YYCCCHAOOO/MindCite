@@ -10,6 +10,7 @@ REQUIRED_PATHS = [
     "config/mindcite.example.json",
     ".env.example",
     "README.md",
+    "README_EN.md",
     "AGENTS.md",
     "SECURITY.md",
     "docs/architecture.md",

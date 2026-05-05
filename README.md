@@ -1,8 +1,49 @@
-# MindCite
+<p align="center">
+  <a href="./README.md"><strong>中文</strong></a>
+  ·
+  <a href="./README_EN.md">English</a>
+</p>
+
+<h1 align="center">MindCite</h1>
+
+<p align="center">
+  <strong>把 Zotero 论文库变成一个可追溯、可复用、可扩展的本地研究工作台。</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/YYCCCHAOOO/MindCite/releases/tag/v0.2.0"><img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-blue"></a>
+  <img alt="Local First" src="https://img.shields.io/badge/local--first-safe-green">
+  <img alt="Zotero" src="https://img.shields.io/badge/Zotero-ready-red">
+  <img alt="Obsidian" src="https://img.shields.io/badge/Obsidian-ready-purple">
+  <img alt="Codex" src="https://img.shields.io/badge/Codex-smart%20deploy-black">
+</p>
+
+> 推荐方式：优先使用 **Codex 智能部署**；熟悉命令行的用户再看 **快速开始**。
 
 MindCite 是一个面向研究者的本地文献工作流模板，用来把 Zotero、Obsidian 和 Codex 串成一条可复用的研究管线：先从 Zotero 建立本地索引，再把论文原文或全文缓存整理为结构化精读笔记，最后基于已生成的 notes 做问答、分类治理和理论/方法综述。
 
 这个公开版是安全模板，不包含任何真实论文、真实索引、真实 Zotero 数据库、API key 或个人研究材料。仓库里的 `examples/demo-vault` 是完全虚构的演示数据，只用于试跑功能。
+
+## 选择你的启动方式
+
+| 如果你是 | 推荐入口 | 适合场景 |
+| --- | --- | --- |
+| Codex 用户 | [Codex 智能部署指令](#codex-智能部署指令) | 让 Codex 自动拉库、配置、检查并只读连接 Zotero。 |
+| 命令行用户 | [快速开始](#快速开始) | 自己复制命令并手动配置 `.env`。 |
+| 先看效果 | [5 分钟体验路径](#5-分钟体验路径) | 不配置真实 Zotero 和 API key，只跑合成 demo。 |
+| 想做分类 | [分类指南](docs/classification-guide.md) | 理解 theory/method/topic、审核队列和 Zotero dry-run。 |
+
+## 工作流一览
+
+```mermaid
+flowchart LR
+  Zotero["Zotero 本地库"] --> Index["本地索引"]
+  Index --> Reading["精读 notes"]
+  Reading --> QA["基于 notes 问答"]
+  Reading --> Classify["分类审核队列"]
+  Classify --> Synthesis["理论/方法/主题综述"]
+  Classify --> DryRun["Zotero 写回 dry-run"]
+```
 
 ## 项目主题
 
