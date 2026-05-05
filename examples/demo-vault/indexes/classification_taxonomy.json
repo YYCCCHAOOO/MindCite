@@ -1,0 +1,33 @@
+{
+  "version": "demo-2026-01",
+  "source": "synthetic-example",
+  "dimensions": {
+    "theory": [
+      {
+        "label": "金融传染",
+        "target_collection_base": "3. 理论文献",
+        "target_collection_path": "3. 理论文献 / 金融传染",
+        "keywords": ["financial contagion", "risk spillover", "金融传染", "风险溢出"],
+        "negative_keywords": []
+      }
+    ],
+    "method": [
+      {
+        "label": "网络分析",
+        "target_collection_base": "2. 模型",
+        "target_collection_path": "2. 模型 / 网络分析",
+        "keywords": ["network", "connectedness", "spillover index", "网络", "连通性"],
+        "negative_keywords": []
+      }
+    ],
+    "topic": [
+      {
+        "label": "国际金融风险",
+        "target_collection_base": "4. 主题研究",
+        "target_collection_path": "4. 主题研究 / 国际金融风险",
+        "keywords": ["global risk", "international finance", "cross-border", "国际金融", "跨境风险"],
+        "negative_keywords": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+﻿interface:
+  display_name: "Zotero Reading System"
+  short_description: "更新索引，优先利用 Zotero 全文缓存与外部 embedding/LLM 生成新版精读笔记。"
+  default_prompt: "使用 $zotero-reading-system 作为 Zotero 精读默认入口。若用户说“更新索引”，先刷新 ${RESEARCHVAULT_ROOT}\\indexes，并强化 collection、PDF、attachment key 与 .zotero-ft-cache 路径；若用户说“请精读 Zotero 中 xxx”，先查索引，再把条目交给 ${RESEARCHVAULT_ROOT}\\_skills\\Zotero-Reading-System\\scripts\\zotero_ai_reading_pipeline.py 执行，优先读取 Zotero 全文缓存，必要时回退 PDF，并同步写 logs 与 reading_status.jsonl。"
+

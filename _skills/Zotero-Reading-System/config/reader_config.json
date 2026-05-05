@@ -1,0 +1,28 @@
+﻿{
+  "deepseek": {
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-v4-flash",
+    "api_key": "",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "timeout_seconds": 120
+  },
+  "embedding": {
+    "url": "https://api.siliconflow.cn/v1/embeddings",
+    "model": "BAAI/bge-m3",
+    "api_key": "",
+    "api_key_env": "SILICONFLOW_API_KEY",
+    "timeout_seconds": 120
+  },
+  "retrieval": {
+    "chunk_chars": 1400,
+    "chunk_overlap_chars": 150,
+    "top_k_per_query": 5,
+    "max_chunks_for_llm": 16,
+    "max_chars_per_chunk_for_llm": 1000
+  },
+  "generation": {
+    "language": "zh-CN",
+    "temperature": 0.2
+  }
+}
+

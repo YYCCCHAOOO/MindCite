@@ -1,0 +1,50 @@
+# Local secrets
+.env
+*.env
+config/researchvault.json
+
+# Runtime outputs
+logs/**
+!logs/.gitkeep
+indexes/**
+!indexes/.gitkeep
+notes/zotero_reading/_papers/**
+!notes/zotero_reading/_papers/.gitkeep
+notes/classification_synthesis/**
+
+# Private research material and large local files
+*.pdf
+*.caj
+*.docx
+*.xlsx
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.sqlite
+*.sqlite-*
+*.db
+*.bak
+*.copy
+*.jsonl
+!examples/demo-vault/indexes/zotero_library_index.jsonl
+!examples/demo-vault/logs/reading_status.jsonl
+
+# Python and editor caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Obsidian local state and bundled plugins
+.obsidian/workspace.json
+.obsidian/plugins/
+.trash/
+
+# Codex / Claude local state
+.claude/
+.codex/
+codex-sessions/

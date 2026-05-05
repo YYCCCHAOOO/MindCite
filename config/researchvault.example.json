@@ -1,0 +1,26 @@
+{
+  "vault": {
+    "root": "",
+    "indexes_dir": "indexes",
+    "logs_dir": "logs",
+    "notes_dir": "notes/zotero_reading",
+    "notes_papers_dir": "notes/zotero_reading/_papers"
+  },
+  "zotero": {
+    "database_path": "${ZOTERO_DB_PATH}",
+    "snapshot_database_path": "${ZOTERO_SNAPSHOT_DB_PATH}",
+    "storage_path": "${ZOTERO_STORAGE_PATH}"
+  },
+  "llm": {
+    "reader_config_path": "_skills/Zotero-Reading-System/config/reader_config.json",
+    "provider": "deepseek"
+  },
+  "embedding": {
+    "provider": "siliconflow"
+  },
+  "safety": {
+    "zotero_writeback_default": "dry-run",
+    "require_apply_flag": true,
+    "create_backup_before_writeback": true
+  }
+}
