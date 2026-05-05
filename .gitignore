@@ -29,6 +29,9 @@ notes/classification_synthesis/**
 *.jsonl
 !examples/demo-vault/indexes/zotero_library_index.jsonl
 !examples/demo-vault/logs/reading_status.jsonl
+examples/demo-vault/indexes/vault_health_report.md
+examples/demo-vault/indexes/orphan_notes.jsonl
+examples/demo-vault/indexes/classification_review_queue.jsonl
 
 # Python and editor caches
 __pycache__/

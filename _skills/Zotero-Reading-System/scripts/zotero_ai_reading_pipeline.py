@@ -1118,10 +1118,39 @@ def main() -> None:
     llm_name, llm_config = llm_provider(config)
     embedding_name, embedding_config = embedding_provider(config)
     index_rows = load_index_rows()
+    if not index_rows:
+        print(
+            json.dumps(
+                {
+                    "ok": True,
+                    "processed": 0,
+                    "message": (
+                        "No indexed papers found. Configure ZOTERO_DB_PATH and run "
+                        "update_zotero_index.py first, or try the demo with "
+                        "MINDCITE_ROOT=examples/demo-vault."
+                    ),
+                },
+                ensure_ascii=False,
+            )
+        )
+        return
+
     item_keys = [part.strip() for part in args.item_keys.split(",") if part.strip()]
     queue = select_rows(index_rows, item_keys, args.next_count, args.rerun_done)
     if not queue:
-        print(json.dumps({"ok": True, "processed": 0, "message": "No matching papers found."}, ensure_ascii=False))
+        print(
+            json.dumps(
+                {
+                    "ok": True,
+                    "processed": 0,
+                    "message": (
+                        "No matching papers found for the requested item keys or status filters. "
+                        "Check indexes/zotero_library_index.jsonl or run update_zotero_index.py."
+                    ),
+                },
+                ensure_ascii=False,
+            )
+        )
         return
 
     db_path = choose_db()

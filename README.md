@@ -64,7 +64,6 @@ python -m pip install -r requirements.txt
 
 ```powershell
 python tools/structure_check.py
-python tools/safety_scan.py
 ```
 
 6. 运行空 Vault 健康检查。
