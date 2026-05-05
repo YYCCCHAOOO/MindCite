@@ -67,6 +67,25 @@ MindCite/
   tools/                           # 发布安全检查工具
 ```
 
+## Codex 智能部署指令
+
+如果你使用 Codex，推荐先不要手动配置。新建一个本地工作区后，直接复制下面这段话给 Codex：
+
+```text
+请从 https://github.com/YYCCCHAOOO/MindCite 拉取仓库，帮我创建一个私有 MindCite Vault。请自动完成依赖安装、配置文件复制、结构检查和 demo smoke test。然后只读探测我的本机 Zotero 数据库和 storage 路径，写入本地 .env，并运行 update_zotero_index.py 生成本地索引。不要提交 .env、indexes、logs、notes、PDF、Zotero 数据库或任何 API key；不要执行任何 --apply；如果只是测试精读通路，请设置 MINDCITE_OFFLINE=1，避免调用远程模型。
+```
+
+Codex 应该完成：
+
+- 克隆仓库并进入项目目录。
+- 复制 `.env.example` 和 `config/mindcite.example.json`。
+- 安装 `requirements.txt`。
+- 运行 `python tools/structure_check.py` 和 `python tools/smoke_test.py`。
+- 只读探测 `ZOTERO_DB_PATH` 与 `ZOTERO_STORAGE_PATH`。
+- 生成本地 Zotero 索引，但不写回 Zotero。
+
+更多 Codex 配置细节见 [Codex Setup](docs/codex-setup.md)。
+
 ## 快速开始
 
 1. 克隆仓库并进入目录。
