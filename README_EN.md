@@ -29,6 +29,7 @@ This public template contains no real papers, Zotero databases, API keys, privat
 | You are | Start here | Best for |
 | --- | --- | --- |
 | A Codex user | [Codex Smart Deploy](#codex-smart-deploy) | Let Codex clone, configure, test, and connect to Zotero in read-only mode. |
+| A no-code user | [Codex Command Cookbook](docs/codex-command-cookbook.md) | Copy natural-language prompts and let Codex operate the workflow. |
 | A command-line user | [Quick Start](#quick-start) | Configure `.env` and run commands manually. |
 | Just exploring | [5-Minute Demo](#5-minute-demo) | Run synthetic demo data without Zotero paths or API keys. |
 | Working on classification | [Classification Guide](docs/classification-guide.md) | Understand theory/method/topic tags, review queues, and Zotero dry-run. |
@@ -102,6 +103,8 @@ Codex should:
 - Build a local Zotero index without writing back to Zotero.
 
 See [Codex Setup](docs/codex-setup.md) for details.
+
+If you have no coding background, start with the [Codex Command Cookbook](docs/codex-command-cookbook.md). It provides copy-ready prompts for deployment, indexing, reading, Q&A, classification, synthesis, and safety checks.
 
 ## Quick Start
 

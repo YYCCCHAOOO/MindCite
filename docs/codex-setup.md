@@ -60,6 +60,8 @@ Remove-Item Env:\MINDCITE_OFFLINE
 
 ## 常用指令
 
+更多 0 代码用户可复制指令见 [Codex Command Cookbook](codex-command-cookbook.md)。
+
 ```text
 更新 Zotero 索引。
 ```

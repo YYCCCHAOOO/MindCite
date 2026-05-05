@@ -5,6 +5,16 @@ description: 检查 Zotero 索引、精读 notes、分类属性、Publication Ta
 
 # Zotero Library Sync
 
+## 给 0 代码用户的 Codex 指令
+
+用户可以直接这样说：
+
+```text
+请帮我检查 MindCite 的 Zotero 索引、reading_status 和 notes 是否同步。请用自然语言告诉我 notes 总数、orphan notes、缺失 frontmatter 字段、done 但找不到 note 的条目，以及报告文件位置。
+```
+
+如果要修复旧数据，Codex 应先生成 dry-run 或迁移预览，再解释风险，不应直接改 notes。
+
 ## 触发条件
 
 - `健康检查`

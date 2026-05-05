@@ -5,6 +5,14 @@ description: 收到“更新索引”时使用。查询 Zotero，生成支持 AI
 
 # Zotero Index Updater
 
+## 给 0 代码用户的 Codex 指令
+
+```text
+请只读更新我的 Zotero 索引。完成后用自然语言告诉我：索引了多少篇文献、多少个 Zotero 分类、多少条缺 PDF、多少条进入 fallback 待分类，以及索引报告在哪里。
+```
+
+Codex 应该自动运行索引脚本并解释输出，不要求用户理解 `jsonl` 或 SQLite。
+
 ## 目标
 
 刷新出一套能直接喂给 Python 精读流水线的索引文件，而不只是给人工搜索用。

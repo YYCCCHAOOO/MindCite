@@ -5,6 +5,20 @@ description: 处理“请精读 Zotero 中 xxx”时使用。先查本地索引�
 
 # Zotero Reading Orchestrator
 
+## 给 0 代码用户的 Codex 指令
+
+```text
+请从当前索引里挑选下一批 2 篇可以精读的文献并生成 notes。优先使用 Zotero 全文缓存，其次使用 PDF。不要重读已完成条目，除非我明确要求重跑。
+```
+
+指定单篇时：
+
+```text
+请精读 Zotero item key 为 ABC12345 的文献；如果找不到，先更新索引并告诉我是否仍然缺失。
+```
+
+Codex 应该先确认索引是否存在，再交给精读脚本执行。
+
 ## 输入解析
 
 优先匹配：

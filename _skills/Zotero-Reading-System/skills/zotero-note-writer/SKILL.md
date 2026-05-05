@@ -5,6 +5,14 @@ description: 将 PDF 原文阅读结果写成新版本精读笔记，只写入 n
 
 # Zotero Note Writer
 
+## 给 0 代码用户的 Codex 指令
+
+```text
+请把这篇文献的精读结果写成 MindCite 新版 note，放到 notes/zotero_reading/_papers，并更新 reading_status。请告诉我 note 路径、状态和是否有 source warning。
+```
+
+Codex 应该解释 frontmatter 中的分类字段，不要求用户手动编辑模板。
+
 ## 输出目录
 
 只写入：

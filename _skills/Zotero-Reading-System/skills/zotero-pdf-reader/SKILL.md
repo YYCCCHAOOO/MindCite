@@ -5,6 +5,14 @@ description: 单篇文献阅读技能。只读取 PDF 原文，不看 Zotero 批
 
 # Zotero PDF Reader
 
+## 给 0 代码用户的 Codex 指令
+
+```text
+请只基于这篇文献的 PDF 或 Zotero 全文缓存提取研究问题、数据、方法、变量、核心发现和与我研究的相关性。没有 PDF 或全文缓存就标记 needs_pdf，不要用摘要或旧笔记替代。
+```
+
+Codex 应该明确告诉用户文本来源是 `zotero-ft-cache` 还是 `PDF`。
+
 ## 唯一阅读依据
 
 只允许使用以下来源：

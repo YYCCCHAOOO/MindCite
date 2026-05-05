@@ -16,6 +16,10 @@
 
 ## 默认入口
 
+面向 0 代码用户时，优先把脚本调用翻译成自然语言步骤。不要一上来要求用户理解 Python 文件名；先说明“我会帮你更新索引 / 生成精读 notes / 做健康检查 / 生成分类队列”，再执行对应脚本。
+
+可复制指令总览：`docs/codex-command-cookbook.md`
+
 ### 文献阅读
 
 - 技能入口：`_skills/Zotero-Reading-System/SKILL.md`

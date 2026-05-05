@@ -5,6 +5,14 @@ description: 单次问答技能。根据新版精读笔记定位证据并回答�
 
 # Notes Answering
 
+## 给 0 代码用户的 Codex 指令
+
+```text
+请只看 MindCite 已生成的新版 notes，回答：<你的问题>。请列出支持答案的笔记标题；如果证据不足，请直接说“当前新版 notes 中证据不足”。
+```
+
+Codex 应该把回答写成“结论 + 证据 + 不足”，不要让用户先去找文件。
+
 ## 工作方式
 
 1. 从 `${MINDCITE_ROOT}\notes\zotero_reading` 中找相关笔记

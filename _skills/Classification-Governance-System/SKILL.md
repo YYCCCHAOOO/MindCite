@@ -5,6 +5,22 @@ description: 基于新版精读 notes 生成理论、方法、主题候选分类
 
 # Classification Governance System
 
+## 给 0 代码用户的 Codex 指令
+
+用户可以直接这样说：
+
+```text
+请基于当前新版精读 notes 生成 theory、method、topic 分类审核队列。只生成建议，不写回 Zotero。完成后告诉我队列有多少条、哪些建议需要人工审核、文件路径在哪里。
+```
+
+如果用户想进入写回流程，Codex 必须先引导 dry-run：
+
+```text
+请只根据 approved 的分类建议生成 Zotero 写回 dry-run，不要执行 --apply。请解释会添加哪些 collection path，确认不会删除现有分类。
+```
+
+Codex 不应该鼓励用户直接批量写回 Zotero。分类模块的默认语气应该是“先建议、再审核、再 dry-run、最后小批量 apply”。
+
 ## 触发条件
 
 - `生成分类审核队列`

@@ -15,6 +15,7 @@ REQUIRED_PATHS = [
     "SECURITY.md",
     "docs/architecture.md",
     "docs/classification-guide.md",
+    "docs/codex-command-cookbook.md",
     "docs/codex-setup.md",
     "docs/troubleshooting.md",
     "docs/extension-policy.md",

@@ -29,6 +29,7 @@ MindCite 是一个面向研究者的本地文献工作流模板，用来把 Zote
 | 如果你是 | 推荐入口 | 适合场景 |
 | --- | --- | --- |
 | Codex 用户 | [Codex 智能部署指令](#codex-智能部署指令) | 让 Codex 自动拉库、配置、检查并只读连接 Zotero。 |
+| 0 代码用户 | [Codex 指令手册](docs/codex-command-cookbook.md) | 直接复制自然语言指令，让 Codex 代替你操作。 |
 | 命令行用户 | [快速开始](#快速开始) | 自己复制命令并手动配置 `.env`。 |
 | 先看效果 | [5 分钟体验路径](#5-分钟体验路径) | 不配置真实 Zotero 和 API key，只跑合成 demo。 |
 | 想做分类 | [分类指南](docs/classification-guide.md) | 理解 theory/method/topic、审核队列和 Zotero dry-run。 |
@@ -126,6 +127,8 @@ Codex 应该完成：
 - 生成本地 Zotero 索引，但不写回 Zotero。
 
 更多 Codex 配置细节见 [Codex Setup](docs/codex-setup.md)。
+
+如果你没有代码基础，建议直接看 [Codex 指令手册](docs/codex-command-cookbook.md)，里面按“部署、更新索引、精读、问答、分类、综述、安全检查”整理了可复制的自然语言指令。
 
 ## 快速开始
 
