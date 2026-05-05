@@ -1,4 +1,4 @@
-﻿---
+---
 name: zotero-library-sync
 description: 检查 Zotero 索引、精读 notes、分类属性、Publication Tag 与 Obsidian Bases 视图之间的同步状态；生成健康报告、属性补齐 dry-run、期刊等级同步和位置整理。
 ---
@@ -17,17 +17,17 @@ description: 检查 Zotero 索引、精读 notes、分类属性、Publication Ta
 
 ## 证据范围
 
-- `${RESEARCHVAULT_ROOT}\indexes`
-- `${RESEARCHVAULT_ROOT}\logs\reading_status.jsonl`
-- `${RESEARCHVAULT_ROOT}\notes\zotero_reading`
+- `${MINDCITE_ROOT}\indexes`
+- `${MINDCITE_ROOT}\logs\reading_status.jsonl`
+- `${MINDCITE_ROOT}\notes\zotero_reading`
 - `${ZOTERO_DB_PATH}`
 
 ## 默认脚本
 
-- 健康检查：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Library-Sync\scripts\vault_health_check.py`
-- 旧 note 分类属性补齐：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Library-Sync\scripts\backfill_note_frontmatter.py`
-- 旧 note 迁移到 `_papers`：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Library-Sync\scripts\migrate_legacy_notes_to_papers.py`
-- Publication Tag 同步：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Library-Sync\scripts\sync_publication_tags_to_notes.py`
+- 健康检查：`${MINDCITE_ROOT}\_skills\Zotero-Library-Sync\scripts\vault_health_check.py`
+- 旧 note 分类属性补齐：`${MINDCITE_ROOT}\_skills\Zotero-Library-Sync\scripts\backfill_note_frontmatter.py`
+- 旧 note 迁移到 `_papers`：`${MINDCITE_ROOT}\_skills\Zotero-Library-Sync\scripts\migrate_legacy_notes_to_papers.py`
+- Publication Tag 同步：`${MINDCITE_ROOT}\_skills\Zotero-Library-Sync\scripts\sync_publication_tags_to_notes.py`
 
 ## Publication Tag 同步规则
 
@@ -49,10 +49,10 @@ description: 检查 Zotero 索引、精读 notes、分类属性、Publication Ta
 
 ## Obsidian Bases 视图
 
-- 入口：`${RESEARCHVAULT_ROOT}\数据库视图\文献数据库入口.md`
-- 总览：`${RESEARCHVAULT_ROOT}\数据库视图\文献总览.base`
-- 高质量期刊：`${RESEARCHVAULT_ROOT}\数据库视图\高质量期刊.base`
-- 理论/方法/主题：`${RESEARCHVAULT_ROOT}\数据库视图\理论方法主题.base`
+- 入口：`${MINDCITE_ROOT}\数据库视图\文献数据库入口.md`
+- 总览：`${MINDCITE_ROOT}\数据库视图\文献总览.base`
+- 高质量期刊：`${MINDCITE_ROOT}\数据库视图\高质量期刊.base`
+- 理论/方法/主题：`${MINDCITE_ROOT}\数据库视图\理论方法主题.base`
 
 ## 强制规则
 
@@ -69,4 +69,3 @@ description: 检查 Zotero 索引、精读 notes、分类属性、Publication Ta
 - 缺失分类属性数量
 - Publication Tag 同步数量
 - 备份位置
-

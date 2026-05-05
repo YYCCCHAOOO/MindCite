@@ -1,4 +1,4 @@
-﻿---
+---
 name: zotero-reading-orchestrator
 description: 处理“请精读 Zotero 中 xxx”时使用。先查本地索引，再把目标条目交给 Python AI 精读脚本执行，而不是由对话层手工提炼。
 ---
@@ -16,7 +16,7 @@ description: 处理“请精读 Zotero 中 xxx”时使用。先查本地索引�
 
 ## 强制规则
 
-- 先查 `${RESEARCHVAULT_ROOT}\indexes\zotero_library_index.jsonl`
+- 先查 `${MINDCITE_ROOT}\indexes\zotero_library_index.jsonl`
 - 不直接先扫 Zotero
 - 不先扫旧笔记
 - 如果索引缺失或无命中，先触发 `zotero-index-updater`
@@ -33,7 +33,7 @@ description: 处理“请精读 Zotero 中 xxx”时使用。先查本地索引�
 
 实际精读不在对话层完成，而是交给：
 
-`${RESEARCHVAULT_ROOT}\_skills\Zotero-Reading-System\scripts\zotero_ai_reading_pipeline.py`
+`${MINDCITE_ROOT}\_skills\Zotero-Reading-System\scripts\zotero_ai_reading_pipeline.py`
 
 典型调用方式：
 
@@ -50,4 +50,3 @@ description: 处理“请精读 Zotero 中 xxx”时使用。先查本地索引�
 - `needs_pdf` 篇数
 - `needs_note` 篇数
 - 本轮日志文件路径
-

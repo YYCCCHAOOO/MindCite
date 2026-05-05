@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -13,7 +13,7 @@ COMMON_DIR = SKILLS_ROOT / "common"
 if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
-from researchvault_config import load_config
+from mindcite_config import load_config
 
 
 CONFIG = load_config(Path(__file__))
@@ -391,7 +391,7 @@ def build_proposal(sample_limit: int) -> dict[str, Any]:
         dimensions[dimension] = [evaluate_rule(rule, notes, sample_limit) for rule in rules]
     return {
         "generated_at": now_iso(),
-        "source": "current ResearchVault notes and zotero_library_index.jsonl",
+        "source": "current MindCite notes and zotero_library_index.jsonl",
         "notes_scanned": len(notes),
         "status": "proposal_only_not_applied",
         "audit_policy": {
@@ -486,4 +486,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

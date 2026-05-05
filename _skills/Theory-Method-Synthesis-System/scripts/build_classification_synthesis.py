@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -14,7 +14,7 @@ COMMON_DIR = SKILLS_ROOT / "common"
 if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
-from researchvault_config import load_config
+from mindcite_config import load_config
 
 
 CONFIG = load_config(Path(__file__))
@@ -516,7 +516,7 @@ created: {yaml_scalar(today_str())}
 generated_at: {yaml_scalar(now_iso())}
 classification_label: {yaml_scalar(label)}
 classification_type: {yaml_scalar(dimension)}
-source_scope: "仅基于 ResearchVault 已有精读 notes"
+source_scope: "仅基于 MindCite 已有精读 notes"
 matched_notes: {len(rows)}
 exact_tag_matches: {exact_count}
 review_status: "draft"
@@ -564,7 +564,7 @@ review_status: "draft"
 - 可以把本页作为 `{label}` 的研究入口：先看核心文献入口，再按方法/主题共现扩展。
 - 如果要写论文综述，优先打开 FT50、UTD24、JCR Q1 或中科院 1 区文献的精读笔记。
 - 如果要找方法路线，优先看“方法搭配”中的高频模型，再跳转到对应单篇。
-- 如果要做小红书/科普转化，可先把本页压缩成“问题-代表文献-方法-结论-启发”的结构。
+- 如果要继续写作文献综述，可先把本页压缩成“问题-代表文献-方法-结论-启发”的结构。
 
 ## 统计概览
 
@@ -642,4 +642,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

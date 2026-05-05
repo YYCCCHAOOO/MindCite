@@ -16,7 +16,7 @@
 复制配置模板：
 
 ```powershell
-Copy-Item config/researchvault.example.json config/researchvault.json
+Copy-Item config/mindcite.example.json config/mindcite.json
 ```
 
 然后重新运行脚本。
@@ -50,7 +50,7 @@ chcp 65001
 
 确认：
 
-- Obsidian 打开的 Vault 是当前仓库或你配置的 `RESEARCHVAULT_ROOT`。
+- Obsidian 打开的 Vault 是当前仓库或你配置的 `MINDCITE_ROOT`。
 - 笔记确实生成在 `notes/zotero_reading/_papers`。
 - Dataview 等插件已由你自己安装。
 
@@ -61,4 +61,3 @@ chcp 65001
 - 删除误放入仓库的数据库、PDF、日志或真实 notes。
 - 把真实 key 移到 `.env`。
 - 把个人路径改成环境变量或相对路径。
-

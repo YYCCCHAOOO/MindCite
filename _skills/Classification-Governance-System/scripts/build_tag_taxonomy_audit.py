@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import re
@@ -13,7 +13,7 @@ COMMON_DIR = SKILLS_ROOT / "common"
 if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
-from researchvault_config import load_config
+from mindcite_config import load_config
 
 
 CONFIG = load_config(Path(__file__))
@@ -229,7 +229,7 @@ def parent_text(entry: dict[str, Any]) -> str:
 def write_current_md(path: Path, taxonomy: dict[str, Any], counts: Counter[str]) -> None:
     dimensions = taxonomy.get("dimensions") or {}
     lines = [
-        "# ResearchVault 当前标签体系",
+        "# MindCite 当前标签体系",
         "",
         f"- Generated at: `{now_iso()}`",
         f"- Taxonomy version: `{taxonomy.get('version', '')}`",
@@ -338,4 +338,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

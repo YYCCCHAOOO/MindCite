@@ -1,4 +1,4 @@
-﻿---
+---
 name: zotero-index-updater
 description: 收到“更新索引”时使用。查询 Zotero，生成支持 AI 精读流水线的本地索引，重点强化分组、PDF 路径、附件 key 和全文缓存路径。
 ---
@@ -27,13 +27,13 @@ description: 收到“更新索引”时使用。查询 Zotero，生成支持 AI
   - `zotero_open_pdf_uri`
 
 3. 刷新索引文件
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_library_index.jsonl`
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_collection_tree.json`
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_index_summary.md`
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_index_meta.json`
+- `${MINDCITE_ROOT}\indexes\zotero_library_index.jsonl`
+- `${MINDCITE_ROOT}\indexes\zotero_collection_tree.json`
+- `${MINDCITE_ROOT}\indexes\zotero_index_summary.md`
+- `${MINDCITE_ROOT}\indexes\zotero_index_meta.json`
 
 4. 对齐新版 notes 元数据
-- 仅检查 `${RESEARCHVAULT_ROOT}\notes\zotero_reading`
+- 仅检查 `${MINDCITE_ROOT}\notes\zotero_reading`
 - 按 `item_key` 定位现有 note，并写入 `active_note_path`
 - Zotero 分类变化只反映到索引字段，不在索引刷新时移动或删除 note 文件
 
@@ -59,4 +59,3 @@ description: 收到“更新索引”时使用。查询 Zotero，生成支持 AI
 - `reading_status`
 - `active_note_path`
 - `updated_at`
-

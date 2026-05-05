@@ -1,4 +1,4 @@
-﻿---
+---
 name: notes-answering
 description: 单次问答技能。根据新版精读笔记定位证据并回答用户问题。
 ---
@@ -7,7 +7,7 @@ description: 单次问答技能。根据新版精读笔记定位证据并回答�
 
 ## 工作方式
 
-1. 从 `${RESEARCHVAULT_ROOT}\notes\zotero_reading` 中找相关笔记
+1. 从 `${MINDCITE_ROOT}\notes\zotero_reading` 中找相关笔记
 2. 优先按题名、关键词、分类路径匹配
 3. 只读最相关的几篇
 4. 基于现有 note 输出结论
@@ -23,4 +23,3 @@ description: 单次问答技能。根据新版精读笔记定位证据并回答�
 直接说明：
 
 `当前新版 notes 中证据不足`
-

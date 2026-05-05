@@ -1,4 +1,4 @@
-﻿---
+---
 name: notes-qa-system
 description: 根据新版精读笔记回答问题。只使用 notes\\zotero_reading 下的有效笔记，不扫描旧 note，不回到 Zotero 原库重新阅读。
 ---
@@ -18,8 +18,8 @@ description: 根据新版精读笔记回答问题。只使用 notes\\zotero_read
 
 只使用：
 
-- `${RESEARCHVAULT_ROOT}\notes\zotero_reading`
-- 必要时可辅助读取 `${RESEARCHVAULT_ROOT}\indexes\zotero_library_index.jsonl` 定位对应 note
+- `${MINDCITE_ROOT}\notes\zotero_reading`
+- 必要时可辅助读取 `${MINDCITE_ROOT}\indexes\zotero_library_index.jsonl` 定位对应 note
 
 明确不使用：
 
@@ -40,4 +40,3 @@ description: 根据新版精读笔记回答问题。只使用 notes\\zotero_read
 2. 支持笔记
 3. 差异或争议
 4. 证据不足处
-

@@ -1,4 +1,4 @@
-﻿---
+---
 name: zotero-pdf-reader
 description: 单篇文献阅读技能。只读取 PDF 原文，不看 Zotero 批注、不看 Zotero note、不看旧版 notes。
 ---
@@ -43,4 +43,3 @@ description: 单篇文献阅读技能。只读取 PDF 原文，不看 Zotero 批
 - 以原文为准
 - 信息不足就如实写不足
 - 不借用旧 note 补空白
-

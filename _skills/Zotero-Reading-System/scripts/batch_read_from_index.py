@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -18,7 +18,7 @@ COMMON_DIR = SKILLS_ROOT / "common"
 if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
-from researchvault_config import configured_existing_paths, load_config
+from mindcite_config import configured_existing_paths, load_config
 
 
 CONFIG = load_config(Path(__file__))
@@ -707,4 +707,3 @@ if __name__ == "__main__":
         )
     else:
         main(batch_size=args.batch_size, rerun_done=args.rerun_done)
-

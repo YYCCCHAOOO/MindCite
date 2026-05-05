@@ -13,10 +13,12 @@
   },
   "llm": {
     "reader_config_path": "_skills/Zotero-Reading-System/config/reader_config.json",
-    "provider": "deepseek"
+    "provider": "${MINDCITE_LLM_PROVIDER:-deepseek}",
+    "available_providers": ["deepseek", "openai", "qwen", "zhipu", "custom"]
   },
   "embedding": {
-    "provider": "siliconflow"
+    "provider": "${MINDCITE_EMBEDDING_PROVIDER:-siliconflow}",
+    "available_providers": ["siliconflow", "openai", "custom"]
   },
   "safety": {
     "zotero_writeback_default": "dry-run",

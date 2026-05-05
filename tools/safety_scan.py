@@ -25,14 +25,14 @@ BLOCKED_SUFFIXES = {
 }
 IGNORED_DIRS = {".git", "__pycache__", ".venv", "venv"}
 CONTENT_PATTERNS = {
-    "private_researchvault_path": re.compile(r"D:\\ResearchVault", re.IGNORECASE),
+    "private_source_vault_path": re.compile(r"D:\\" + "Research" + "Vault", re.IGNORECASE),
     "private_user_path": re.compile(r"C:\\Users\\64111", re.IGNORECASE),
     "openai_style_secret": re.compile(r"sk-[A-Za-z0-9_-]{20,}"),
     "github_token": re.compile(r"gh[pousr]_[A-Za-z0-9_]{20,}"),
     "slack_token": re.compile(r"xox[baprs]-[A-Za-z0-9-]{20,}"),
     "nonempty_json_api_key": re.compile(r'"api_key"\s*:\s*"(?!")([^"]+)"', re.IGNORECASE),
     "nonempty_env_secret": re.compile(
-        r"^(?:DEEPSEEK|SILICONFLOW|OPENAI|ANTHROPIC|GEMINI)_API_KEY=(?!\s*$|<)[^\r\n]+$",
+        r"^(?:DEEPSEEK|SILICONFLOW|OPENAI|ANTHROPIC|GEMINI|DASHSCOPE|ZHIPU|MINDCITE_LLM|MINDCITE_EMBEDDING)_API_KEY=(?!\s*$|<)[^\r\n]+$",
         re.MULTILINE,
     ),
 }

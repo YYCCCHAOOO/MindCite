@@ -1,7 +1,7 @@
 # Local secrets
 .env
 *.env
-config/researchvault.json
+config/mindcite.json
 
 # Runtime outputs
 logs/**

@@ -1,4 +1,4 @@
-﻿---
+---
 name: classification-governance-system
 description: 基于新版精读 notes 生成理论、方法、主题候选分类与人工审核队列；也可生成 Zotero 写回 dry-run 计划，但第一版不真实写回 Zotero。
 ---
@@ -17,32 +17,32 @@ description: 基于新版精读 notes 生成理论、方法、主题候选分类
 
 ## 输入范围
 
-- `${RESEARCHVAULT_ROOT}\notes\zotero_reading`
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_library_index.jsonl`
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_collection_tree.json`
-- `${RESEARCHVAULT_ROOT}\indexes\classification_taxonomy.json`
+- `${MINDCITE_ROOT}\notes\zotero_reading`
+- `${MINDCITE_ROOT}\indexes\zotero_library_index.jsonl`
+- `${MINDCITE_ROOT}\indexes\zotero_collection_tree.json`
+- `${MINDCITE_ROOT}\indexes\classification_taxonomy.json`
 
 ## 默认脚本
 
 生成分类审核队列：
-`${RESEARCHVAULT_ROOT}\_skills\Classification-Governance-System\scripts\build_classification_review_queue.py`
+`${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\build_classification_review_queue.py`
 
 生成 Zotero 写回 dry-run：
-`${RESEARCHVAULT_ROOT}\_skills\Classification-Governance-System\scripts\build_zotero_writeback_dryrun.py`
+`${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\build_zotero_writeback_dryrun.py`
 
 生成可审计标签体系提案：
-`${RESEARCHVAULT_ROOT}\_skills\Classification-Governance-System\scripts\build_tag_taxonomy_proposal.py`
+`${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\build_tag_taxonomy_proposal.py`
 
 默认输出：
-- `${RESEARCHVAULT_ROOT}\indexes\classification_review_queue.jsonl`
-- `${RESEARCHVAULT_ROOT}\indexes\zotero_writeback_dryrun.jsonl`
-- `${RESEARCHVAULT_ROOT}\indexes\audited_tag_taxonomy_proposal.md`
-- `${RESEARCHVAULT_ROOT}\indexes\audited_tag_taxonomy_proposal.json`
+- `${MINDCITE_ROOT}\indexes\classification_review_queue.jsonl`
+- `${MINDCITE_ROOT}\indexes\zotero_writeback_dryrun.jsonl`
+- `${MINDCITE_ROOT}\indexes\audited_tag_taxonomy_proposal.md`
+- `${MINDCITE_ROOT}\indexes\audited_tag_taxonomy_proposal.json`
 
 ## 分类词表
 
-- 可执行配置：`${RESEARCHVAULT_ROOT}\indexes\classification_taxonomy.json`
-- 人工维护模板：`${RESEARCHVAULT_ROOT}\模板\分类词表模板.md`
+- 可执行配置：`${MINDCITE_ROOT}\indexes\classification_taxonomy.json`
+- 人工维护模板：`${MINDCITE_ROOT}\模板\分类词表模板.md`
 - 先编辑词表，再重新生成审核队列。
 - 词表分为 `theory`、`method`、`topic` 三个维度；每个条目包含 `label`、`target_collection_base`、`keywords`、`negative_keywords`，可选 `target_collection_path` 用于精确映射现有 Zotero 分类。
 
@@ -77,9 +77,8 @@ description: 基于新版精读 notes 生成理论、方法、主题候选分类
 - 只有当系统发现新标签、建议拆分标签、建议合并标签或标签命名冲突时，才进入用户审计。
 - 新标签在用户批准前不得写入正式 taxonomy，不得写入 Zotero。
 - 标签级审计默认输出：
-  - `${RESEARCHVAULT_ROOT}\indexes\tag_taxonomy_current.md`
-  - `${RESEARCHVAULT_ROOT}\indexes\tag_taxonomy_audit.md`
-  - `${RESEARCHVAULT_ROOT}\indexes\tag_taxonomy_audit.json`
+  - `${MINDCITE_ROOT}\indexes\tag_taxonomy_current.md`
+  - `${MINDCITE_ROOT}\indexes\tag_taxonomy_audit.md`
+  - `${MINDCITE_ROOT}\indexes\tag_taxonomy_audit.json`
 - 标签级审计脚本：
-  - `${RESEARCHVAULT_ROOT}\_skills\Classification-Governance-System\scripts\build_tag_taxonomy_audit.py`
-
+  - `${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\build_tag_taxonomy_audit.py`

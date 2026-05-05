@@ -1,5 +1,4 @@
-﻿interface:
+interface:
   display_name: "Notes QA System"
   short_description: "只基于 notes\\zotero_reading 中的新版本精读笔记回答问题。"
-  default_prompt: "使用 $notes-qa-system 作为文献问答默认入口。只读取 ${RESEARCHVAULT_ROOT}\\notes\\zotero_reading 中的新版本精读笔记；不要扫描旧 note，不要回到 Zotero 重新阅读；如果证据不足，要明确说明当前新版 notes 中证据不足。"
-
+  default_prompt: "使用 $notes-qa-system 作为文献问答默认入口。只读取 ${MINDCITE_ROOT}\\notes\\zotero_reading 中的新版本精读笔记；不要扫描旧 note，不要回到 Zotero 重新阅读；如果证据不足，要明确说明当前新版 notes 中证据不足。"

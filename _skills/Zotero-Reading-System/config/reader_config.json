@@ -1,17 +1,92 @@
-﻿{
-  "deepseek": {
-    "base_url": "https://api.deepseek.com",
-    "model": "deepseek-v4-flash",
-    "api_key": "",
-    "api_key_env": "DEEPSEEK_API_KEY",
-    "timeout_seconds": 120
+{
+  "llm": {
+    "provider": "${MINDCITE_LLM_PROVIDER:-deepseek}",
+    "providers": {
+      "deepseek": {
+        "display_name": "DeepSeek",
+        "base_url": "https://api.deepseek.com",
+        "model": "${DEEPSEEK_MODEL:-deepseek-chat}",
+        "api_key": "",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "timeout_seconds": 120,
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "openai": {
+        "display_name": "OpenAI",
+        "base_url": "https://api.openai.com/v1",
+        "model": "${OPENAI_MODEL:-gpt-4o-mini}",
+        "api_key": "",
+        "api_key_env": "OPENAI_API_KEY",
+        "timeout_seconds": 120,
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "qwen": {
+        "display_name": "Alibaba Cloud DashScope / Qwen",
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "model": "${DASHSCOPE_MODEL:-qwen-plus}",
+        "api_key": "",
+        "api_key_env": "DASHSCOPE_API_KEY",
+        "timeout_seconds": 120,
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "zhipu": {
+        "display_name": "Zhipu AI",
+        "base_url": "https://open.bigmodel.cn/api/paas/v4",
+        "model": "${ZHIPU_MODEL:-glm-4-flash}",
+        "api_key": "",
+        "api_key_env": "ZHIPU_API_KEY",
+        "timeout_seconds": 120,
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "custom": {
+        "display_name": "OpenAI-compatible custom endpoint",
+        "base_url": "${MINDCITE_LLM_BASE_URL}",
+        "model": "${MINDCITE_LLM_MODEL}",
+        "api_key": "",
+        "api_key_env": "MINDCITE_LLM_API_KEY",
+        "timeout_seconds": 120,
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
   },
   "embedding": {
-    "url": "https://api.siliconflow.cn/v1/embeddings",
-    "model": "BAAI/bge-m3",
-    "api_key": "",
-    "api_key_env": "SILICONFLOW_API_KEY",
-    "timeout_seconds": 120
+    "provider": "${MINDCITE_EMBEDDING_PROVIDER:-siliconflow}",
+    "providers": {
+      "siliconflow": {
+        "display_name": "SiliconFlow",
+        "url": "https://api.siliconflow.cn/v1/embeddings",
+        "model": "${SILICONFLOW_EMBEDDING_MODEL:-BAAI/bge-m3}",
+        "api_key": "",
+        "api_key_env": "SILICONFLOW_API_KEY",
+        "timeout_seconds": 120
+      },
+      "openai": {
+        "display_name": "OpenAI Embeddings",
+        "url": "https://api.openai.com/v1/embeddings",
+        "model": "${OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}",
+        "api_key": "",
+        "api_key_env": "OPENAI_API_KEY",
+        "timeout_seconds": 120
+      },
+      "custom": {
+        "display_name": "OpenAI-compatible embedding endpoint",
+        "url": "${MINDCITE_EMBEDDING_URL}",
+        "model": "${MINDCITE_EMBEDDING_MODEL}",
+        "api_key": "",
+        "api_key_env": "MINDCITE_EMBEDDING_API_KEY",
+        "timeout_seconds": 120
+      }
+    }
   },
   "retrieval": {
     "chunk_chars": 1400,
@@ -25,4 +100,3 @@
     "temperature": 0.2
   }
 }
-

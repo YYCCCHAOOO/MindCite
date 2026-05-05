@@ -1,4 +1,4 @@
-﻿---
+---
 name: theory-method-synthesis-system
 description: 对某个理论、方法或主题分类下的 Zotero 精读 notes 生成分类脉络综述；默认使用 Obsidian 双链交叉引用，方便从综述跳转到单篇论文笔记。
 ---
@@ -13,8 +13,8 @@ description: 对某个理论、方法或主题分类下的 Zotero 精读 notes �
 
 ## 证据范围
 
-- 默认只读取 `${RESEARCHVAULT_ROOT}\notes\zotero_reading\_papers` 中的现有精读笔记。
-- 读取 `${RESEARCHVAULT_ROOT}\indexes\classification_taxonomy.json` 判断标签维度、父级、子级和组合模型关系。
+- 默认只读取 `${MINDCITE_ROOT}\notes\zotero_reading\_papers` 中的现有精读笔记。
+- 读取 `${MINDCITE_ROOT}\indexes\classification_taxonomy.json` 判断标签维度、父级、子级和组合模型关系。
 - 可读取 note frontmatter 中的期刊、Zotero 分类、理论、方法、主题字段。
 - 不把外部常识写成 Vault 已有结论；若需要外部文献补全，必须标为“缺口文献/后续检索”。
 
@@ -23,15 +23,15 @@ description: 对某个理论、方法或主题分类下的 Zotero 精读 notes �
 运行：
 
 ```powershell
-python ${RESEARCHVAULT_ROOT}\_skills\Theory-Method-Synthesis-System\scripts\build_classification_synthesis.py --label <分类名>
+python ${MINDCITE_ROOT}\_skills\Theory-Method-Synthesis-System\scripts\build_classification_synthesis.py --label <分类名>
 ```
 
 默认输出按标签架构分层，不再使用 `classification_synthesis_` 前缀：
 
-- 理论：`${RESEARCHVAULT_ROOT}\notes\classification_synthesis\理论\<父级理论>\<分类名>.md`
-- 方法组合模型：`${RESEARCHVAULT_ROOT}\notes\classification_synthesis\方法\组合模型\<父级组合>\<分类名>.md`
-- 主题：`${RESEARCHVAULT_ROOT}\notes\classification_synthesis\主题\<父级主题>\<分类名>.md`
-- 总入口：`${RESEARCHVAULT_ROOT}\notes\classification_synthesis\分类综述入口.md`
+- 理论：`${MINDCITE_ROOT}\notes\classification_synthesis\理论\<父级理论>\<分类名>.md`
+- 方法组合模型：`${MINDCITE_ROOT}\notes\classification_synthesis\方法\组合模型\<父级组合>\<分类名>.md`
+- 主题：`${MINDCITE_ROOT}\notes\classification_synthesis\主题\<父级主题>\<分类名>.md`
+- 总入口：`${MINDCITE_ROOT}\notes\classification_synthesis\分类综述入口.md`
 
 ## Obsidian 交叉引用规则
 
@@ -54,4 +54,3 @@ python ${RESEARCHVAULT_ROOT}\_skills\Theory-Method-Synthesis-System\scripts\buil
 - 不写回 Zotero。
 - 不修改精读主流程。
 - 不批量生成发布内容。
-

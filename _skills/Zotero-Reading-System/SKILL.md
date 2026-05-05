@@ -1,4 +1,4 @@
-﻿---
+---
 name: zotero-reading-system
 description: 收到“更新索引”或“请精读 Zotero 中 xxx”时使用。先刷新本地索引，再由 Python 精读流水线优先读取 Zotero 的全文缓存（.zotero-ft-cache），必要时才回退 PDF，并结合外部 embedding / LLM 生成结构化精读笔记。
 ---
@@ -58,14 +58,13 @@ description: 收到“更新索引”或“请精读 Zotero 中 xxx”时使用�
 
 ## 默认输出位置
 
-- 索引：`${RESEARCHVAULT_ROOT}\indexes`
-- 日志：`${RESEARCHVAULT_ROOT}\logs`
-- 新版笔记根目录：`${RESEARCHVAULT_ROOT}\notes\zotero_reading`
-- 新生成单篇笔记：`${RESEARCHVAULT_ROOT}\notes\zotero_reading\_papers`
+- 索引：`${MINDCITE_ROOT}\indexes`
+- 日志：`${MINDCITE_ROOT}\logs`
+- 新版笔记根目录：`${MINDCITE_ROOT}\notes\zotero_reading`
+- 新生成单篇笔记：`${MINDCITE_ROOT}\notes\zotero_reading\_papers`
 
 ## 关键脚本
 
-- 索引刷新：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Reading-System\scripts\update_zotero_index.py`
-- AI 精读：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Reading-System\scripts\zotero_ai_reading_pipeline.py`
-- 配置：`${RESEARCHVAULT_ROOT}\_skills\Zotero-Reading-System\config\reader_config.json`
-
+- 索引刷新：`${MINDCITE_ROOT}\_skills\Zotero-Reading-System\scripts\update_zotero_index.py`
+- AI 精读：`${MINDCITE_ROOT}\_skills\Zotero-Reading-System\scripts\zotero_ai_reading_pipeline.py`
+- 配置：`${MINDCITE_ROOT}\_skills\Zotero-Reading-System\config\reader_config.json`

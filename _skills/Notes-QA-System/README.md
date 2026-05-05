@@ -1,4 +1,4 @@
-﻿# Notes QA System
+# Notes QA System
 
 这是新的问答总入口。
 
@@ -6,5 +6,4 @@
 
 默认有效笔记范围：
 
-- `${RESEARCHVAULT_ROOT}\notes\zotero_reading`
-
+- `${MINDCITE_ROOT}\notes\zotero_reading`

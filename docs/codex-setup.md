@@ -39,12 +39,11 @@
 如果 Codex 报路径不可读，先检查 `.env` 和当前终端工作目录。若要用演示数据，可临时设置：
 
 ```powershell
-$env:RESEARCHVAULT_ROOT=(Resolve-Path .\examples\demo-vault)
+$env:MINDCITE_ROOT=(Resolve-Path .\examples\demo-vault)
 ```
 
 完成演示后清除：
 
 ```powershell
-Remove-Item Env:\RESEARCHVAULT_ROOT
+Remove-Item Env:\MINDCITE_ROOT
 ```
-

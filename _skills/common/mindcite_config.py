@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import os
@@ -14,9 +14,9 @@ ENV_PATTERN = re.compile(r"\$\{([A-Z0-9_]+)(?::-(.*?))?\}")
 def _find_repo_root(start: Path | None = None) -> Path:
     current = (start or Path(__file__)).resolve()
     for candidate in (current, *current.parents):
-        if (candidate / "config" / "researchvault.example.json").exists():
+        if (candidate / "config" / "mindcite.example.json").exists():
             return candidate
-        if (candidate / "config" / "researchvault.json").exists():
+        if (candidate / "config" / "mindcite.json").exists():
             return candidate
     return Path(__file__).resolve().parents[2]
 
@@ -46,6 +46,14 @@ def _expand_env(value: Any) -> Any:
         return os.environ.get(name, default)
 
     return ENV_PATTERN.sub(replace, os.path.expandvars(value)).strip()
+
+
+def expand_env_data(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {key: expand_env_data(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [expand_env_data(item) for item in value]
+    return _expand_env(value)
 
 
 def _deep_get(data: dict[str, Any], dotted: str, default: Any = None) -> Any:
@@ -80,20 +88,20 @@ def _optional_path(value: Any, root: Path) -> Path | None:
 def load_raw_config(start: Path | None = None) -> tuple[Path, dict[str, Any]]:
     repo_root = _find_repo_root(start)
     _load_dotenv(repo_root)
-    config_env = os.environ.get("RESEARCHVAULT_CONFIG", "").strip()
+    config_env = os.environ.get("MINDCITE_CONFIG", "").strip()
     if config_env:
         config_path = Path(config_env).expanduser()
     else:
-        config_path = repo_root / "config" / "researchvault.json"
+        config_path = repo_root / "config" / "mindcite.json"
     if not config_path.exists():
-        config_path = repo_root / "config" / "researchvault.example.json"
+        config_path = repo_root / "config" / "mindcite.example.json"
     if not config_path.exists():
         return repo_root, {}
-    return repo_root, json.loads(config_path.read_text(encoding="utf-8"))
+    return repo_root, json.loads(config_path.read_text(encoding="utf-8-sig"))
 
 
 @dataclass(frozen=True)
-class ResearchVaultConfig:
+class MindCiteConfig:
     root: Path
     indexes_dir: Path
     logs_dir: Path
@@ -117,9 +125,9 @@ class ResearchVaultConfig:
         return self.indexes_dir / "classification_taxonomy.json"
 
 
-def load_config(start: Path | None = None) -> ResearchVaultConfig:
+def load_config(start: Path | None = None) -> MindCiteConfig:
     repo_root, data = load_raw_config(start)
-    root_value = os.environ.get("RESEARCHVAULT_ROOT") or _deep_get(data, "vault.root", "")
+    root_value = os.environ.get("MINDCITE_ROOT") or _deep_get(data, "vault.root", "")
     root = _resolve_path(root_value, repo_root, repo_root).resolve()
 
     indexes_dir = _resolve_path(_deep_get(data, "vault.indexes_dir", "indexes"), root, "indexes")
@@ -136,7 +144,7 @@ def load_config(start: Path | None = None) -> ResearchVaultConfig:
         "_skills/Zotero-Reading-System/config/reader_config.json",
     )
 
-    return ResearchVaultConfig(
+    return MindCiteConfig(
         root=root,
         indexes_dir=indexes_dir,
         logs_dir=logs_dir,
@@ -154,5 +162,3 @@ def load_config(start: Path | None = None) -> ResearchVaultConfig:
 
 def configured_existing_paths(*paths: Path | None) -> list[Path]:
     return [path for path in paths if path is not None and path.exists()]
-
-

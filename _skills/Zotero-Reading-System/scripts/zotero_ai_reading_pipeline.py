@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -27,7 +27,7 @@ COMMON_DIR = SKILLS_ROOT / "common"
 if str(COMMON_DIR) not in sys.path:
     sys.path.insert(0, str(COMMON_DIR))
 
-from researchvault_config import configured_existing_paths, load_config
+from mindcite_config import configured_existing_paths, expand_env_data, load_config
 
 
 CONFIG = load_config(Path(__file__))
@@ -177,7 +177,39 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
 def load_config() -> dict[str, Any]:
     if not CONFIG_PATH.exists():
         raise FileNotFoundError(f"Missing config: {CONFIG_PATH}")
-    return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    return expand_env_data(json.loads(CONFIG_PATH.read_text(encoding="utf-8-sig")))
+
+
+def provider_from_config(config: dict[str, Any], section: str, legacy_key: str | None = None) -> tuple[str, dict[str, Any]]:
+    section_config = config.get(section) or {}
+    providers = section_config.get("providers") if isinstance(section_config, dict) else None
+    if isinstance(providers, dict):
+        env_name = f"MINDCITE_{section.upper()}_PROVIDER"
+        provider_name = (os.environ.get(env_name) or section_config.get("provider") or "").strip()
+        if not provider_name:
+            provider_name = next(iter(providers))
+        if provider_name not in providers:
+            available = ", ".join(sorted(providers))
+            raise ValueError(f"Unknown {section} provider `{provider_name}`. Available providers: {available}")
+        block = dict(providers[provider_name])
+        block["provider"] = provider_name
+        return provider_name, block
+
+    if legacy_key and legacy_key in config:
+        block = dict(config[legacy_key])
+        block["provider"] = legacy_key
+        return legacy_key, block
+
+    block = dict(section_config)
+    return str(block.get("provider") or section), block
+
+
+def llm_provider(config: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    return provider_from_config(config, "llm", "deepseek")
+
+
+def embedding_provider(config: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    return provider_from_config(config, "embedding", "embedding")
 
 
 def read_user_env_var(name: str) -> str | None:
@@ -436,19 +468,23 @@ def post_json(url: str, payload: dict[str, Any], headers: dict[str, str], timeou
 
 
 def embed_texts(texts: list[str], config: dict[str, Any]) -> list[list[float]]:
-    key = configured_key(config["embedding"])
+    provider_name, provider = embedding_provider(config)
+    key = configured_key(provider)
     if not key:
-        raise RuntimeError("Missing SiliconFlow embedding API key.")
+        raise RuntimeError(f"Missing {provider_name} embedding API key.")
+    url = (provider.get("url") or provider.get("base_url") or "").strip()
+    if not url:
+        raise RuntimeError(f"Missing {provider_name} embedding URL.")
     payload = {
-        "model": config["embedding"]["model"],
+        "model": provider["model"],
         "input": texts,
         "encoding_format": "float",
     }
     response = post_json(
-        config["embedding"]["url"],
+        url,
         payload,
         {"Authorization": f"Bearer {key}"},
-        int(config["embedding"].get("timeout_seconds", 120)),
+        int(provider.get("timeout_seconds", 120)),
     )
     data = response.get("data") or []
     data = sorted(data, key=lambda row: row.get("index", 0))
@@ -510,10 +546,12 @@ def retrieve_evidence(chunks: list[Chunk], text: str, source: str, config: dict[
                 enriched[name] = section_evidence[name]
             else:
                 enriched[name] = fallback_rank_chunks(chunks, query, top_k)
-        if not configured_key(config["embedding"]):
+        _, provider = embedding_provider(config)
+        if not configured_key(provider):
             return enriched, "section-aware-fallback"
 
-    embedding_key = configured_key(config["embedding"])
+    provider_name, provider = embedding_provider(config)
+    embedding_key = configured_key(provider)
     if embedding_key:
         try:
             query_vecs = embed_texts(list(queries.values()), config)
@@ -532,17 +570,23 @@ def retrieve_evidence(chunks: list[Chunk], text: str, source: str, config: dict[
 
 
 def llm_complete(messages: list[dict[str, str]], config: dict[str, Any]) -> dict[str, Any]:
-    key = configured_key(config["deepseek"])
+    provider_name, provider = llm_provider(config)
+    key = configured_key(provider)
     if not key:
-        raise RuntimeError("Missing DeepSeek API key.")
-    url = config["deepseek"]["base_url"].rstrip("/") + "/chat/completions"
+        raise RuntimeError(f"Missing {provider_name} LLM API key.")
+    base_url = (provider.get("base_url") or "").strip()
+    if not base_url:
+        raise RuntimeError(f"Missing {provider_name} LLM base_url.")
+    url = base_url.rstrip("/") + "/chat/completions"
     payload = {
-        "model": config["deepseek"]["model"],
+        "model": provider["model"],
         "temperature": config["generation"].get("temperature", 0.2),
         "messages": messages,
-        "response_format": {"type": "json_object"},
     }
-    return post_json(url, payload, {"Authorization": f"Bearer {key}"}, int(config["deepseek"].get("timeout_seconds", 120)))
+    response_format = provider.get("response_format", {"type": "json_object"})
+    if response_format:
+        payload["response_format"] = response_format
+    return post_json(url, payload, {"Authorization": f"Bearer {key}"}, int(provider.get("timeout_seconds", 120)))
 
 
 def clip(text: str, limit: int = 160) -> str:
@@ -791,7 +835,8 @@ def llm_summary(index_row: dict[str, Any], meta: dict[str, Any], evidence: dict[
             last_error = exc
             data = None
     if data is None:
-        raise RuntimeError(f"DeepSeek generation failed after retries: {last_error}")
+        provider_name, _ = llm_provider(config)
+        raise RuntimeError(f"{provider_name} generation failed after retries: {last_error}")
     data["title"] = index_row["title"]
     data["authors"] = "; ".join(meta.get("authors") or [])
     data["year"] = extract_year(meta.get("raw_date"), index_row.get("year"))
@@ -1033,10 +1078,11 @@ def process_row(index_row: dict[str, Any], meta: dict[str, Any], config: dict[st
     llm_mode = "heuristic-fallback"
     generation_error = ""
     summary = heuristic_summary(index_row, meta, evidence)
-    if configured_key(config["deepseek"]):
+    llm_name, llm_config = llm_provider(config)
+    if configured_key(llm_config):
         try:
             summary = llm_summary(index_row, meta, evidence, config)
-            llm_mode = "deepseek"
+            llm_mode = llm_name
         except Exception as exc:
             llm_mode = "heuristic-fallback"
             generation_error = f"{type(exc).__name__}: {exc}"
@@ -1069,6 +1115,8 @@ def main() -> None:
     NOTES_PAPERS_DIR.mkdir(parents=True, exist_ok=True)
 
     config = load_config()
+    llm_name, llm_config = llm_provider(config)
+    embedding_name, embedding_config = embedding_provider(config)
     index_rows = load_index_rows()
     item_keys = [part.strip() for part in args.item_keys.split(",") if part.strip()]
     queue = select_rows(index_rows, item_keys, args.next_count, args.rerun_done)
@@ -1088,8 +1136,10 @@ def main() -> None:
         "",
         f"- Time: `{now_iso()}`",
         f"- Count: `{len(queue)}`",
-        f"- DeepSeek configured: `{bool(configured_key(config['deepseek']))}`",
-        f"- Embedding configured: `{bool(configured_key(config['embedding']))}`",
+        f"- LLM provider: `{llm_name}`",
+        f"- LLM configured: `{bool(configured_key(llm_config))}`",
+        f"- Embedding provider: `{embedding_name}`",
+        f"- Embedding configured: `{bool(configured_key(embedding_config))}`",
         "",
         "## Results",
         "",
@@ -1156,8 +1206,10 @@ def main() -> None:
                 "ok": True,
                 "processed": processed,
                 "log_path": str(log_path),
-                "deepseek_configured": bool(configured_key(config["deepseek"])),
-                "embedding_configured": bool(configured_key(config["embedding"])),
+                "llm_provider": llm_name,
+                "llm_configured": bool(configured_key(llm_config)),
+                "embedding_provider": embedding_name,
+                "embedding_configured": bool(configured_key(embedding_config)),
             },
             ensure_ascii=False,
         )
@@ -1167,4 +1219,3 @@ def main() -> None:
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     main()
-

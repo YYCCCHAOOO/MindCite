@@ -1,4 +1,4 @@
-﻿# Zotero Reading System
+# Zotero Reading System
 
 新的默认流程不再直接依赖裸 PDF 解析。
 
@@ -17,15 +17,15 @@
 - 最后生成接近 Obsidian 模板结构的精读笔记
 
 3. 输出位置
-- 索引：`${RESEARCHVAULT_ROOT}\indexes`
-- 日志：`${RESEARCHVAULT_ROOT}\logs`
-- 笔记：`${RESEARCHVAULT_ROOT}\notes\zotero_reading`
+- 索引：`${MINDCITE_ROOT}\indexes`
+- 日志：`${MINDCITE_ROOT}\logs`
+- 笔记：`${MINDCITE_ROOT}\notes\zotero_reading`
 
 ## 配置
 
 配置文件：
 
-`${RESEARCHVAULT_ROOT}\_skills\Zotero-Reading-System\config\reader_config.json`
+`${MINDCITE_ROOT}\_skills\Zotero-Reading-System\config\reader_config.json`
 
 优先读取环境变量：
 
@@ -33,4 +33,3 @@
 - `SILICONFLOW_API_KEY`
 
 如果没有配置 key，脚本会回退到本地 heuristic 模式，但推荐始终配置外部接口。
-

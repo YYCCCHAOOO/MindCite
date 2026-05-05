@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_PATHS = [
-    "config/researchvault.example.json",
+    "config/mindcite.example.json",
     ".env.example",
     "README.md",
     "AGENTS.md",
@@ -15,7 +15,7 @@ REQUIRED_PATHS = [
     "docs/architecture.md",
     "docs/codex-setup.md",
     "docs/troubleshooting.md",
-    "_skills/common/researchvault_config.py",
+    "_skills/common/mindcite_config.py",
     "_skills/Zotero-Reading-System/scripts/update_zotero_index.py",
     "_skills/Zotero-Reading-System/scripts/zotero_ai_reading_pipeline.py",
     "_skills/Notes-QA-System/SKILL.md",
@@ -33,4 +33,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
