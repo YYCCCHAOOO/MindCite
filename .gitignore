@@ -32,6 +32,15 @@ notes/classification_synthesis/**
 examples/demo-vault/indexes/vault_health_report.md
 examples/demo-vault/indexes/orphan_notes.jsonl
 examples/demo-vault/indexes/classification_review_queue.jsonl
+examples/demo-vault/indexes/tag_taxonomy_open_candidates.json
+examples/demo-vault/indexes/tag_taxonomy_open_candidates.md
+examples/demo-vault/indexes/tag_taxonomy_open_candidate_priority.json
+examples/demo-vault/indexes/tag_taxonomy_open_candidate_priority.md
+examples/demo-vault/indexes/tag_taxonomy_decision_preview_summary.json
+examples/demo-vault/indexes/tag_taxonomy_decision_preview_summary.md
+examples/demo-vault/indexes/tag_taxonomy_decision_apply_summary.json
+examples/demo-vault/indexes/tag_taxonomy_decision_apply_summary.md
+examples/demo-vault/indexes/tag_taxonomy_discard_blacklist.json
 
 # Python and editor caches
 __pycache__/

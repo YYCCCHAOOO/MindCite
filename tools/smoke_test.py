@@ -17,6 +17,15 @@ DEMO_OUTPUTS = [
     DEMO_ROOT / "indexes" / "vault_health_report.md",
     DEMO_ROOT / "indexes" / "orphan_notes.jsonl",
     DEMO_ROOT / "indexes" / "classification_review_queue.jsonl",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_open_candidates.json",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_open_candidates.md",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_open_candidate_priority.json",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_open_candidate_priority.md",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_decision_preview_summary.json",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_decision_preview_summary.md",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_decision_apply_summary.json",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_decision_apply_summary.md",
+    DEMO_ROOT / "indexes" / "tag_taxonomy_discard_blacklist.json",
 ]
 
 
@@ -64,10 +73,17 @@ def check_demo_expectations(steps: list[dict[str, Any]]) -> dict[str, Any]:
     expected = json.loads(expected_path.read_text(encoding="utf-8"))
     health = parse_last_json(next(row["stdout"] for row in steps if row["name"] == "demo_health"))
     queue = parse_last_json(next(row["stdout"] for row in steps if row["name"] == "demo_queue"))
+    tag_discover = parse_last_json(next(row["stdout"] for row in steps if row["name"] == "demo_tag_discover"))
+    tag_priority = parse_last_json(next(row["stdout"] for row in steps if row["name"] == "demo_tag_priority"))
+    tag_preview = parse_last_json(next(row["stdout"] for row in steps if row["name"] == "demo_tag_preview"))
     checks = {
         "demo_index_rows": health.get("indexed_items") == expected["demo_index_rows"],
         "demo_notes_total": health.get("notes_total") == expected["demo_notes_total"],
         "demo_queue_rows": queue.get("rows") == expected["demo_queue_rows"],
+        "demo_tag_candidates": int(tag_discover.get("candidates") or 0) > 0,
+        "demo_tag_priority_rows": int(tag_priority.get("rows") or 0) == int(tag_discover.get("candidates") or -1),
+        "demo_tag_preview_pending": tag_preview.get("counts", {}).get("pending") == tag_priority.get("rows"),
+        "demo_tag_preview_apply_false": tag_preview.get("applied") is False,
     }
     return {"name": "demo_expectations", "ok": all(checks.values()), "checks": checks}
 
@@ -115,6 +131,21 @@ def main() -> int:
         steps.append(run_step("safety_scan", ["tools/safety_scan.py"]))
         steps.append(run_step("demo_health", ["_skills/Zotero-Library-Sync/scripts/vault_health_check.py"], env=demo_env))
         steps.append(run_step("demo_queue", ["_skills/Classification-Governance-System/scripts/build_classification_review_queue.py", "--all"], env=demo_env))
+        steps.append(
+            run_step(
+                "demo_tag_discover",
+                ["_skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py", "--min-notes", "1"],
+                env=demo_env,
+            )
+        )
+        steps.append(run_step("demo_tag_priority", ["_skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py"], env=demo_env))
+        steps.append(
+            run_step(
+                "demo_tag_preview",
+                ["_skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py", "--use-markdown-operations"],
+                env=demo_env,
+            )
+        )
         steps.append(run_step("validate_contracts", ["tools/validate_data_contracts.py", "--demo-only"]))
         steps.append(run_empty_index_probe())
         steps.append(check_demo_expectations(steps))

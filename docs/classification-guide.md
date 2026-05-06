@@ -108,10 +108,120 @@ flowchart TD
   Reading --> Health["健康检查"]
   Health --> Queue["生成分类审核队列"]
   Queue --> Review["人工审核 queue"]
+  Reading --> OpenTags["v0.3 发现开放标签"]
+  OpenTags --> Priority["生成标签优先级表"]
+  Priority --> TagDecision["a/p/m/r 标签决策预览"]
+  TagDecision --> Taxonomy["确认后写入 taxonomy"]
   Review --> DryRun["生成 Zotero 写回 dry-run"]
   DryRun --> Apply["确认后写回 Zotero"]
   Review --> Synthesis["生成理论/方法/主题综述"]
 ```
+
+## v0.3 标签体系审计：审标签，不逐篇审论文
+
+早期流程会生成 `classification_review_queue.jsonl`，让你看每篇论文的 theory、method、topic 建议。这在小库里很好用，但当 notes 多起来以后，逐篇审核会很累，也容易把注意力放在个别论文上。
+
+v0.3 的分类治理换成更适合长期维护的做法：先让系统发现“还没进入正式 taxonomy 的开放标签候选”，再由你判断这个标签本身要不要存在。
+
+你只需要回答四类问题：
+
+| 操作 | 含义 | 什么时候用 |
+| --- | --- | --- |
+| `a` | accept，接受为正式标签 | 这个标签以后会长期用于理论、方法或主题分类。 |
+| `p` | pending，暂存观察 | 现在看不准，先不进入正式 taxonomy。 |
+| `m` | merge，合并到已有标签 | 这是已有标签的英文名、缩写、同义词或过细变体。 |
+| `r` | reject，丢弃进黑名单 | 这是噪声、导入残留、临时词或不适合作为研究标签。 |
+
+### 1. 发现开放标签候选
+
+```powershell
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+```
+
+输出：
+
+- `indexes/tag_taxonomy_open_candidates.json`
+- `indexes/tag_taxonomy_open_candidates.md`
+
+这一步会扫描新版 notes 的 frontmatter 和少量通用关键词规则，找出“出现在 notes 中，但还不是正式 taxonomy 标签或别名”的候选。它不会修改 notes、taxonomy 或 Zotero。
+
+`--min-notes 1` 适合 demo 或小库；真实库可以改成 `--min-notes 2` 或 `--min-notes 3`，减少偶然噪声。
+
+### 2. 生成优先级审计表
+
+```powershell
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+```
+
+输出：
+
+- `indexes/tag_taxonomy_open_candidate_priority.json`
+- `indexes/tag_taxonomy_open_candidate_priority.md`
+
+重点打开 markdown 文件。里面每一行是一个候选标签，核心列如下：
+
+| 列名 | 怎么理解 |
+| --- | --- |
+| `operation` | 你要做的决策，默认 `p`，可以改成 `a`、`m`、`r`。 |
+| `suggested_operation` | 系统建议，不会自动生效。 |
+| `label` | 候选标签名。 |
+| `source_dimension` | 候选来自 theory、method 还是 topic 字段。 |
+| `dimension_choice` | 你确认它最终属于哪个维度，允许跨维度纠正。 |
+| `role_choice` | `parent` 父级标签、`child` 子标签、`noise` 噪声。 |
+| `level_choice` | 标签层级，例如 `theory_family`、`family`、`topic_family`、`model`、`combo`。 |
+| `parent_choice` | 如果是子标签，挂到哪个父级标签下。 |
+| `merge_target` | 如果选 `m`，这里写要合并到的正式标签。 |
+| `merge_options` | 系统根据相似度和关键词给出的合并候选。 |
+
+### 3. 只做决策预览
+
+改完 markdown 后，先预览：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
+```
+
+输出：
+
+- `indexes/tag_taxonomy_decision_preview_summary.json`
+- `indexes/tag_taxonomy_decision_preview_summary.md`
+
+预览只告诉你“如果应用，会接受几个、合并几个、丢弃几个、暂存几个”，不会真的修改 taxonomy。
+
+### 4. 确认后再应用
+
+只有当 preview 没问题时，才执行：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations --apply
+```
+
+这一步只会改两个文件：
+
+- `indexes/classification_taxonomy.json`
+- `indexes/tag_taxonomy_discard_blacklist.json`
+
+它不会写回 Zotero，也不会批量改 notes frontmatter。Zotero 写回仍然必须走 dry-run，并且需要你明确确认。
+
+### 常见决策例子
+
+把候选接受为方法父级：
+
+| operation | label | dimension_choice | role_choice | level_choice | parent_choice |
+| --- | --- | --- | --- | --- | --- |
+| `a` | `Network connectedness` | `method` | `parent` | `family` |  |
+
+把缩写合并到已有方法标签：
+
+| operation | label | dimension_choice | role_choice | merge_target |
+| --- | --- | --- | --- | --- |
+| `m` | `connectedness` | `method` | `child` | `method:Network Analysis` |
+
+把噪声丢弃：
+
+| operation | label | dimension_choice | role_choice | decision_note |
+| --- | --- | --- | --- | --- |
+| `r` | `metadata import` | `topic` | `noise` | `导入来源，不是研究标签` |
 
 ## 第一步：更新 Zotero 索引
 

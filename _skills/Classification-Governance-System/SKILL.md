@@ -13,6 +13,12 @@ description: 基于新版精读 notes 生成理论、方法、主题候选分类
 请基于当前新版精读 notes 生成 theory、method、topic 分类审核队列。只生成建议，不写回 Zotero。完成后告诉我队列有多少条、哪些建议需要人工审核、文件路径在哪里。
 ```
 
+v0.3 标签体系治理可以直接这样说：
+
+```text
+请基于当前新版精读 notes 做一次 MindCite v0.3 标签体系审计：先发现开放标签候选，再生成优先级审计表，最后只做决策预览。不要修改 taxonomy，不要写回 Zotero。请告诉我哪些候选建议接受、暂存、合并或丢弃，以及需要我人工编辑的 markdown 文件在哪里。
+```
+
 如果用户想进入写回流程，Codex 必须先引导 dry-run：
 
 ```text
@@ -30,6 +36,9 @@ Codex 不应该鼓励用户直接批量写回 Zotero。分类模块的默认语�
 - `调整分类词表`
 - `生成标签体系提案`
 - `审计标签体系`
+- `发现开放标签候选`
+- `合并重复标签`
+- `丢弃噪声标签`
 
 ## 输入范围
 
@@ -49,11 +58,23 @@ Codex 不应该鼓励用户直接批量写回 Zotero。分类模块的默认语�
 生成可审计标签体系提案：
 `${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\build_tag_taxonomy_proposal.py`
 
+发现 v0.3 开放标签候选：
+`${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\discover_open_tag_candidates.py`
+
+生成 v0.3 标签优先级审计表：
+`${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\prioritize_open_tag_candidates.py`
+
+预览或应用 v0.3 标签决策：
+`${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\apply_tag_taxonomy_decisions.py`
+
 默认输出：
 - `${MINDCITE_ROOT}\indexes\classification_review_queue.jsonl`
 - `${MINDCITE_ROOT}\indexes\zotero_writeback_dryrun.jsonl`
 - `${MINDCITE_ROOT}\indexes\audited_tag_taxonomy_proposal.md`
 - `${MINDCITE_ROOT}\indexes\audited_tag_taxonomy_proposal.json`
+- `${MINDCITE_ROOT}\indexes\tag_taxonomy_open_candidates.md`
+- `${MINDCITE_ROOT}\indexes\tag_taxonomy_open_candidate_priority.md`
+- `${MINDCITE_ROOT}\indexes\tag_taxonomy_decision_preview_summary.md`
 
 ## 分类词表
 
@@ -98,3 +119,42 @@ Codex 不应该鼓励用户直接批量写回 Zotero。分类模块的默认语�
   - `${MINDCITE_ROOT}\indexes\tag_taxonomy_audit.json`
 - 标签级审计脚本：
   - `${MINDCITE_ROOT}\_skills\Classification-Governance-System\scripts\build_tag_taxonomy_audit.py`
+
+## V3 标签体系治理流程
+
+v0.3 的重点是“用户审标签体系”，不是“用户逐篇审论文归属”。Codex 应该把任务拆成三个小动作：
+
+1. 发现开放候选：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+```
+
+2. 生成可编辑优先级表：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+```
+
+3. 只做决策预览：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
+```
+
+用户在 `${MINDCITE_ROOT}\indexes\tag_taxonomy_open_candidate_priority.md` 中只需要改少数字段：
+
+- `operation`: `a` 接受，`p` 暂存，`m` 合并，`r` 丢弃。
+- `dimension_choice`: `theory`、`method` 或 `topic`。
+- `role_choice`: `parent`、`child` 或 `noise`。
+- `level_choice`: `theory_family`、`family`、`topic_family`、`model`、`combo` 等。
+- `parent_choice`: 接受为子标签时挂到哪个父标签。
+- `merge_target`: 合并到哪个已有标签，可写成 `method:Network Analysis` 这类形式。
+
+只有用户看过 preview summary 并明确要求后，Codex 才能执行：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations --apply
+```
+
+`--apply` 只会修改 `${MINDCITE_ROOT}\indexes\classification_taxonomy.json` 和 `${MINDCITE_ROOT}\indexes\tag_taxonomy_discard_blacklist.json`，不会修改 Zotero，也不会批量改 note frontmatter。正式 Zotero 写回仍然走 dry-run 流程。

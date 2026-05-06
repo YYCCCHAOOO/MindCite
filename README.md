@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/YYCCCHAOOO/MindCite/releases/tag/v0.2.0"><img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-blue"></a>
+  <a href="https://github.com/YYCCCHAOOO/MindCite/releases/tag/v0.3.0"><img alt="Release v0.3.0" src="https://img.shields.io/badge/release-v0.3.0-blue"></a>
   <img alt="Local First" src="https://img.shields.io/badge/local--first-safe-green">
   <img alt="Zotero" src="https://img.shields.io/badge/Zotero-ready-red">
   <img alt="Obsidian" src="https://img.shields.io/badge/Obsidian-ready-purple">
@@ -42,6 +42,8 @@ flowchart LR
   Index --> Reading["精读 notes"]
   Reading --> QA["基于 notes 问答"]
   Reading --> Classify["分类审核队列"]
+  Reading --> Tags["v0.3 标签体系审计"]
+  Tags --> Taxonomy["正式 taxonomy"]
   Classify --> Synthesis["理论/方法/主题综述"]
   Classify --> DryRun["Zotero 写回 dry-run"]
 ```
@@ -59,6 +61,7 @@ MindCite 的核心不是“让 AI 替你读完所有论文”，而是帮你建�
 - 可试跑：内置 `examples/demo-vault` 合成演示数据，刚下载就能验证主流程。
 - 可扩展：模型厂商、embedding、模板、分类维度和外部数据库都通过配置层扩展。
 - 可守底线：v0.2 起加入 schema 校验、原子写入、迁移 dry-run、quarantine 和 smoke test。
+- 分类更稳：v0.3 起支持“审标签体系”而不是逐篇审论文，用 `a/p/m/r` 管理新增、暂存、合并和丢弃。
 - 面向研究者：重点服务“持续阅读、分类治理、理论/方法积累、后续论文写作”，不是一次性的聊天问答。
 
 ## 适合谁
@@ -87,6 +90,9 @@ python tools/validate_data_contracts.py --demo-only
 $env:MINDCITE_ROOT=(Resolve-Path .\examples\demo-vault)
 python _skills/Zotero-Library-Sync/scripts/vault_health_check.py
 python _skills/Classification-Governance-System/scripts/build_classification_review_queue.py --all
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
 Remove-Item Env:\MINDCITE_ROOT
 ```
 
@@ -252,6 +258,28 @@ python _skills/Classification-Governance-System/scripts/build_classification_rev
 
 ### 标签体系审计
 
+v0.3 推荐把分类治理拆成两层：旧流程继续生成“论文级审核队列”，新流程负责发现新标签、判断标签是否应该进入正式 taxonomy。你主要审标签是否值得存在，不需要逐篇确认每篇论文属于哪个标签。
+
+```powershell
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
+```
+
+输出：
+
+- `indexes/tag_taxonomy_open_candidates.md`
+- `indexes/tag_taxonomy_open_candidate_priority.md`
+- `indexes/tag_taxonomy_decision_preview_summary.md`
+
+在 `tag_taxonomy_open_candidate_priority.md` 里只改 `operation` 列：`a` 接受为正式标签，`p` 暂存观察，`m` 合并到 `merge_target`，`r` 丢弃到黑名单。确认无误后才运行：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations --apply
+```
+
+旧版审计报告仍可使用：
+
 ```powershell
 python _skills/Classification-Governance-System/scripts/build_tag_taxonomy_proposal.py
 python _skills/Classification-Governance-System/scripts/build_tag_taxonomy_audit.py
@@ -307,13 +335,14 @@ LLM 与 embedding 的厂商、base URL、默认模型配置在 `_skills/Zotero-R
 
 ## 安全底座
 
-v0.2.0 开始，MindCite 把长期扩展风险显式拆出来：
+v0.2.0 开始，MindCite 把长期扩展风险显式拆出来；v0.3.0 进一步把分类体系变更变成可预览、可回滚、可黑名单化的治理流程：
 
 - `schemas/`：定义 index、reading status、note frontmatter、taxonomy、review queue 的数据契约。
 - `_skills/common/safe_io.py`：提供原子写入、备份和 quarantine。
 - `tools/validate_data_contracts.py`：校验 demo 或真实 Vault 是否符合当前契约。
 - `tools/migrate.py`：默认 dry-run，把旧数据升级到当前 `schema_version`。
 - `tools/smoke_test.py`：用 demo-vault 跑一遍回归检查。
+- `tag_taxonomy_*`：开放候选、优先级审计表和决策预览，正式改 taxonomy 前先留痕。
 
 推荐在新增功能或迁移真实 Vault 前执行：
 

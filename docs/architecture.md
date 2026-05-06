@@ -11,6 +11,8 @@ flowchart LR
   Reading --> Notes["notes/zotero_reading/_papers"]
   Notes --> QA["Notes 问答"]
   Notes --> Governance["分类治理"]
+  Governance --> TagAudit["v0.3 标签体系审计"]
+  TagAudit --> Taxonomy["classification_taxonomy.json"]
   Governance --> Synthesis["理论/方法/主题综述"]
 ```
 
@@ -41,6 +43,7 @@ flowchart LR
 - 核心数据文件带 `schema_version`，并由 `tools/validate_data_contracts.py` 校验。
 - 关键写入使用 `_skills/common/safe_io.py` 的原子写入工具。
 - 需要清理旧笔记时先进入 `logs/quarantine`，不要直接删除。
+- 分类标签变更先进入 `tag_taxonomy_*` 预览文件，再由用户用 `a/p/m/r` 决策，避免新功能直接污染正式 taxonomy。
 
 ## v0.2.0 安全底座
 
@@ -54,3 +57,19 @@ flowchart TD
 ```
 
 长期扩展时，先更新 schema 和迁移，再改脚本行为。这样即使后续加入新模型、新数据库、新分类维度，也能先发现旧数据是否会被破坏。
+
+## v0.3.0 标签治理层
+
+```mermaid
+flowchart TD
+  Notes["新版 notes"] --> Discover["discover_open_tag_candidates.py"]
+  Discover --> Candidates["tag_taxonomy_open_candidates.md"]
+  Candidates --> Priority["prioritize_open_tag_candidates.py"]
+  Priority --> Table["tag_taxonomy_open_candidate_priority.md"]
+  Table --> Preview["apply_tag_taxonomy_decisions.py"]
+  Preview --> Summary["tag_taxonomy_decision_preview_summary.md"]
+  Preview -->|--apply after review| Taxonomy["classification_taxonomy.json"]
+  Preview -->|reject| Blacklist["tag_taxonomy_discard_blacklist.json"]
+```
+
+v0.3 不改变 Zotero 写回策略：taxonomy 决策只更新本地标签体系和黑名单。Zotero 仍然必须先生成 dry-run，再由用户显式确认 `--apply`。

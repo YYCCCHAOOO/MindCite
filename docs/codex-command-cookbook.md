@@ -116,7 +116,33 @@ Codex 应该重点检查：
 请基于当前 notes 生成标签体系提案和审计报告，告诉我哪些标签可能重复、哪些标签过细、哪些标签值得保留。不要写回 Zotero。
 ```
 
-## 11. 生成理论/方法/主题综述
+## 11. v0.3 标签体系审计
+
+如果你已经有一批新版精读 notes，可以让 Codex 帮你审“标签是否应该存在”，而不是逐篇审每篇论文的分类。
+
+```text
+请基于当前 MindCite 新版精读 notes 运行 v0.3 标签体系审计。第一步发现开放标签候选，第二步生成优先级审计表，第三步只做决策预览。不要修改 classification_taxonomy.json，不要写回 Zotero，不要批量改 notes。完成后请告诉我 tag_taxonomy_open_candidate_priority.md 在哪里，并按 accept、pending、merge、reject 四类解释你建议我怎么改 operation 列。
+```
+
+当你想让 Codex 帮你改表，但仍然不应用：
+
+```text
+请帮我阅读 tag_taxonomy_open_candidate_priority.md。对于明显同义词请建议 operation=m 和 merge_target；对于值得长期保留的标签建议 operation=a；对于导入噪声建议 operation=r。请先列出建议，不要直接执行 --apply。
+```
+
+确认预览：
+
+```text
+我已经人工修改了 tag_taxonomy_open_candidate_priority.md。请运行 apply_tag_taxonomy_decisions.py --use-markdown-operations 做预览，不要 --apply。请告诉我会接受、合并、丢弃、暂存各多少个标签，以及会不会修改 taxonomy。
+```
+
+真正应用前再用这条，且只应用 taxonomy 决策，不碰 Zotero：
+
+```text
+我确认 preview 没问题。请执行 v0.3 标签决策 --apply，只允许修改 classification_taxonomy.json 和 tag_taxonomy_discard_blacklist.json。不要写回 Zotero，不要批量改 notes。完成后运行 safety_scan 和 validate_data_contracts。
+```
+
+## 12. 生成理论/方法/主题综述
 
 ```text
 请基于已生成的新版 notes，为“金融传染”生成一份理论综述入口。只使用 notes 中已有证据，不重读 PDF，不写回 Zotero。完成后告诉我综述文件路径，以及当前证据不足的地方。
@@ -128,13 +154,13 @@ Codex 应该重点检查：
 请基于已生成的新版 notes，为“DCC-GARCH”生成方法综述，重点整理它服务哪些研究主题、常见变量和主要发现。
 ```
 
-## 12. 数据安全检查
+## 13. 数据安全检查
 
 ```text
 请在提交前帮我做 MindCite 安全检查。运行 safety_scan、structure_check、validate_data_contracts 和 smoke_test。确认没有 .env、真实 notes、indexes、logs、PDF、Zotero 数据库或 API key 会被提交。
 ```
 
-## 13. 常见故障排查
+## 14. 常见故障排查
 
 Zotero 路径错误：
 

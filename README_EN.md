@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/YYCCCHAOOO/MindCite/releases/tag/v0.2.0"><img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-blue"></a>
+  <a href="https://github.com/YYCCCHAOOO/MindCite/releases/tag/v0.3.0"><img alt="Release v0.3.0" src="https://img.shields.io/badge/release-v0.3.0-blue"></a>
   <img alt="Local First" src="https://img.shields.io/badge/local--first-safe-green">
   <img alt="Zotero" src="https://img.shields.io/badge/Zotero-ready-red">
   <img alt="Obsidian" src="https://img.shields.io/badge/Obsidian-ready-purple">
@@ -42,6 +42,8 @@ flowchart LR
   Index --> Reading["Reading Notes"]
   Reading --> QA["Notes-based Q&A"]
   Reading --> Classify["Classification Review Queue"]
+  Reading --> Tags["v0.3 Tag Taxonomy Audit"]
+  Tags --> Taxonomy["Formal Taxonomy"]
   Classify --> Synthesis["Theory/Method/Topic Synthesis"]
   Classify --> DryRun["Zotero Writeback Dry-run"]
 ```
@@ -53,6 +55,7 @@ flowchart LR
 - Demo-ready: `examples/demo-vault` lets you test the workflow immediately.
 - Extensible: LLM providers, embeddings, templates, classification dimensions, and data sources are configurable.
 - Safer long-term work: v0.2 adds schema validation, atomic writes, migration dry-runs, quarantine, and smoke tests.
+- Better classification governance: v0.3 audits the tag system itself with `a/p/m/r` decisions for accept, pending, merge, and reject.
 
 ## Who This Is For
 
@@ -80,6 +83,9 @@ python tools/validate_data_contracts.py --demo-only
 $env:MINDCITE_ROOT=(Resolve-Path .\examples\demo-vault)
 python _skills/Zotero-Library-Sync/scripts/vault_health_check.py
 python _skills/Classification-Governance-System/scripts/build_classification_review_queue.py --all
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
 Remove-Item Env:\MINDCITE_ROOT
 ```
 
@@ -189,9 +195,14 @@ Typical commands:
 ```powershell
 python _skills/Zotero-Library-Sync/scripts/vault_health_check.py
 python _skills/Classification-Governance-System/scripts/build_classification_review_queue.py --all
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
 python _skills/Classification-Governance-System/scripts/build_zotero_writeback_dryrun.py --approved-only
 python _skills/Classification-Governance-System/scripts/apply_zotero_writeback_sqlite.py --limit 5
 ```
+
+The v0.3 tag taxonomy table lets you edit one `operation` column: `a` accepts a candidate into the formal taxonomy, `p` keeps it pending, `m` merges it into `merge_target`, and `r` rejects it into the blacklist. Only add `--apply` after reviewing the preview summary.
 
 Only run `--apply` after manually reviewing the dry-run output and backing up/closing Zotero.
 
@@ -218,6 +229,7 @@ v0.2 introduces:
 - `tools/validate_data_contracts.py`: validates demo or real Vault data.
 - `tools/migrate.py`: migration entrypoint, dry-run by default.
 - `tools/smoke_test.py`: regression test using `examples/demo-vault`.
+- `tag_taxonomy_*`: v0.3 candidate discovery, priority tables, and decision previews before changing the formal taxonomy.
 
 Before adding features or migrating real data:
 
