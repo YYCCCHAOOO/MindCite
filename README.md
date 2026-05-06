@@ -260,6 +260,86 @@ python _skills/Classification-Governance-System/scripts/build_classification_rev
 
 v0.3 推荐把分类治理拆成两层：旧流程继续生成“论文级审核队列”，新流程负责发现新标签、判断标签是否应该进入正式 taxonomy。你主要审标签是否值得存在，不需要逐篇确认每篇论文属于哪个标签。
 
+#### 宝宝级教程：v0.3 新功能怎么用
+
+这个功能解决的是一个很具体的问题：你的 notes 越来越多以后，里面会出现很多新标签、缩写、英文别名、重复标签和导入噪声。v0.3 不要求你一篇篇论文去审，而是把这些“可能要进入长期分类体系的标签”集中成一张表，让你只判断标签本身要不要保留。
+
+如果你没有代码基础，直接把这段话复制给 Codex：
+
+```text
+请帮我运行 MindCite v0.3 标签体系审计。只做三步：发现开放标签候选、生成优先级审计表、生成决策预览。不要执行 --apply，不要写回 Zotero，不要批量修改 notes。完成后请告诉我 tag_taxonomy_open_candidate_priority.md 的路径，并用通俗语言解释哪些标签建议接受、哪些建议合并、哪些先暂存。
+```
+
+Codex 应该替你运行：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
+python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
+```
+
+运行完你只需要看一个文件：
+
+```text
+indexes/tag_taxonomy_open_candidate_priority.md
+```
+
+把它理解成一张“标签体检表”：
+
+| 你看到的列 | 宝宝级理解 | 你要不要改 |
+| --- | --- | --- |
+| `label` | 系统发现的候选标签名 | 一般不改 |
+| `source_dimension` | 它原来像 theory、method 还是 topic | 一般不改 |
+| `suggested_operation` | 系统给你的建议 | 只参考，不自动生效 |
+| `operation` | 你的最终决定 | 重点只改这一列 |
+| `merge_target` | 如果要合并，合并到哪个旧标签 | 只有 `operation=m` 时才需要看 |
+| `parent_choice` | 如果这是子标签，挂到哪个父标签下面 | 不确定就先空着 |
+
+`operation` 只填四种字母：
+
+| 填什么 | 意思 | 例子 |
+| --- | --- | --- |
+| `a` | 接受，加入正式标签体系 | 你确认“因果识别”以后会长期用 |
+| `p` | 暂存，先观察 | 你觉得可能有用，但现在还不确定 |
+| `m` | 合并到已有标签 | `DCC` 合并到 `method:DCC-GARCH` |
+| `r` | 丢弃，加入黑名单 | `metadata import` 这种导入噪声 |
+
+推荐第一次这样做：
+
+1. 先不要追求一次整理完，只看前 20 个高优先级标签。
+2. 明显重复的填 `m`，并确认 `merge_target` 对不对。
+3. 明显有长期价值的填 `a`。
+4. 看不懂的全部保持 `p`。
+5. 明显不是研究标签的填 `r`。
+
+改完表以后，再让 Codex 只做预览：
+
+```text
+我已经修改了 tag_taxonomy_open_candidate_priority.md。请只运行 v0.3 标签决策预览，不要 --apply。请告诉我 accepted、merged、rejected、pending 各有多少个，并说明会不会修改 taxonomy。
+```
+
+对应命令是：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations
+```
+
+只有当你确认预览没问题，才可以让 Codex 应用：
+
+```text
+我确认 preview 没问题。请执行 v0.3 标签决策 --apply。只允许修改 classification_taxonomy.json 和 tag_taxonomy_discard_blacklist.json，不要写回 Zotero，不要批量修改 notes。完成后运行 safety_scan 和 validate_data_contracts。
+```
+
+对应命令是：
+
+```powershell
+python _skills/Classification-Governance-System/scripts/apply_tag_taxonomy_decisions.py --use-markdown-operations --apply
+```
+
+安全提醒：`--apply` 不是 Zotero 写回，它只更新本地标签体系文件；真正写回 Zotero 仍然必须走 Zotero dry-run 流程。新手建议前几次都停在 preview，不急着 apply。
+
+如果你熟悉命令行，也可以直接运行下面这组三步：
+
 ```powershell
 python _skills/Classification-Governance-System/scripts/discover_open_tag_candidates.py --min-notes 1
 python _skills/Classification-Governance-System/scripts/prioritize_open_tag_candidates.py
