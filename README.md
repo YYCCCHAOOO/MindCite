@@ -439,6 +439,12 @@ python tools/migrate.py --apply
 
 扩展新功能前，请先看 `docs/extension-policy.md`。
 
+## 致谢与来源说明
+
+MindCite 的部分工作流思想受到 GitHub 用户 `cheneternity` 的两个公开 Codex skill 仓库启发，包括 Zotero 到 Obsidian 的阅读工作流拆分，以及基于本地 Vault 笔记回答问题的原则。
+
+本仓库不内置、不复制、不再分发上游仓库的文件或模板；公开版代码、配置层、数据契约、demo 数据、安全扫描和分类治理均为 MindCite 重新实现。详细说明见 [NOTICE.md](NOTICE.md) 和 [Attribution Review](docs/attribution-review.md)。
+
 ## 常见问题
 
 **没有 PDF 怎么办？**  

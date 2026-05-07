@@ -238,6 +238,12 @@ python tools/migrate.py --dry-run
 python tools/smoke_test.py
 ```
 
+## Acknowledgements
+
+Some workflow ideas in MindCite were inspired by public Codex skill repositories by GitHub user `cheneternity`, especially Zotero-to-Obsidian workflow decomposition and evidence-only local Vault retrieval.
+
+MindCite does not vendor, copy, or redistribute upstream files or templates. Its scripts, configuration layer, data contracts, demo data, safety checks, and classification governance are independently implemented. See [NOTICE.md](NOTICE.md) and [Attribution Review](docs/attribution-review.md).
+
 ## FAQ
 
 **Can I upload my private Vault directly?**  
