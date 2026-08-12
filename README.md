@@ -1,3 +1,5 @@
+
+
 <p align="center">
   <a href="./README.md"><strong>中文</strong></a>
   ·
@@ -110,6 +112,7 @@ MindCite/
   logs/                            # 运行日志，默认不提交
   migrations/                      # 数据结构迁移脚本
   notes/zotero_reading/_papers/    # 新版精读笔记输出，默认不提交
+  requirements.txt                 # Python 依赖
   schemas/                         # 核心数据契约
   templates/                       # 可放你的公开模板
   tools/                           # 发布安全检查工具
